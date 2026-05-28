@@ -10,6 +10,9 @@ app.use(express.json());
 const authRoutes = require('./routes/auth');
 app.use('/api/auth', authRoutes);
 
+const postRoutes = require('./routes/posts');
+app.use('/api/posts', postRoutes);
+
 app.get('/', (req, res) => {
   res.json({ message: 'CMS Blog API po punon!' });
 });
