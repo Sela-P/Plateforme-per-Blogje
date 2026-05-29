@@ -13,6 +13,12 @@ app.use('/api/auth', authRoutes);
 const postRoutes = require('./routes/posts');
 app.use('/api/posts', postRoutes);
 
+const categoryRoutes = require('./routes/categories');
+app.use('/api/categories', categoryRoutes);
+
+const tagRoutes = require('./routes/tags');
+app.use('/api/tags', tagRoutes);
+
 app.get('/', (req, res) => {
   res.json({ message: 'CMS Blog API po punon!' });
 });
