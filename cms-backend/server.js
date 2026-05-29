@@ -55,6 +55,8 @@ app.use('/api/notifications', notificationRoutes);
 const auditLogRoutes = require('./routes/auditLog');
 app.use('/api/auditlog', auditLogRoutes);
 
+const userRoutes = require('./routes/users');
+app.use('/api/users', userRoutes);
 
 app.get('/', (req, res) => {
   res.json({ message: 'CMS Blog API po punon!' });
