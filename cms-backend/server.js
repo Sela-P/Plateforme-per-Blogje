@@ -58,6 +58,10 @@ app.use('/api/auditlog', auditLogRoutes);
 const userRoutes = require('./routes/users');
 app.use('/api/users', userRoutes);
 
+const refreshTokenRoutes = require('./routes/refreshTokens');
+app.use('/api/refreshtokens', refreshTokenRoutes);
+
+
 app.get('/', (req, res) => {
   res.json({ message: 'CMS Blog API po punon!' });
 });
