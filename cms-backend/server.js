@@ -40,6 +40,20 @@ app.use('/api/roles', roleRoutes);
 const postViewRoutes = require('./routes/postViews');
 app.use('/api/postviews', postViewRoutes);
 
+const userRoleRoutes = require('./routes/userRoles');
+app.use('/api/userroles', userRoleRoutes);
+
+const userClaimRoutes = require('./routes/userClaims');
+app.use('/api/userclaims', userClaimRoutes);
+
+const postTagRoutes = require('./routes/postTags');
+app.use('/api/posttags', postTagRoutes);
+
+const notificationRoutes = require('./routes/notifications');
+app.use('/api/notifications', notificationRoutes);
+
+const auditLogRoutes = require('./routes/auditLog');
+app.use('/api/auditlog', auditLogRoutes);
 
 
 app.get('/', (req, res) => {
