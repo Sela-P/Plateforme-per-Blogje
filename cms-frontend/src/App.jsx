@@ -10,6 +10,7 @@ import Media from './pages/Media';
 import Settings from './pages/Settings';
 import Newsletter from './pages/Newsletter';
 import Users from './pages/Users';
+import Roles from './pages/Roles';
 
 
 function App() {
@@ -28,6 +29,7 @@ function App() {
         <Route path="/settings" element={<Settings />} />
         <Route path="/newsletter" element={<Newsletter />} />
         <Route path="/users" element={<Users />} />
+        <Route path="/roles" element={<Roles />} />
 
       </Routes>
     </BrowserRouter>
