@@ -1,4 +1,5 @@
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom';
+import Sidebar from './components/Sidebar';
 import Login from './pages/Login';
 import Dashboard from './pages/Dashboard';
 import Posts from './pages/Posts';
@@ -13,27 +14,38 @@ import Users from './pages/Users';
 import Roles from './pages/Roles';
 import Subscriptions from './pages/Subscriptions';
 
+function Layout({ children }) {
+  const location = useLocation();
+  const isLogin = location.pathname === '/login' || location.pathname === '/';
+  return (
+    <div className="d-flex">
+      {!isLogin && <Sidebar />}
+      <div className="flex-grow-1">{children}</div>
+    </div>
+  );
+}
 
 function App() {
   return (
     <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<Login />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/dashboard" element={<Dashboard />} />
-        <Route path="/posts" element={<Posts />} />
-        <Route path="/categories" element={<Categories />} />
-        <Route path="/tags" element={<Tags />} />
-        <Route path="/comments" element={<Comments />} />
-        <Route path="/pages" element={<Pages />} />
-        <Route path="/media" element={<Media />} />
-        <Route path="/settings" element={<Settings />} />
-        <Route path="/newsletter" element={<Newsletter />} />
-        <Route path="/users" element={<Users />} />
-        <Route path="/roles" element={<Roles />} />
-        <Route path="/subscriptions" element={<Subscriptions />} />
-
-      </Routes>
+      <Layouts>
+        <Routes>
+          <Route path="/" element={<Login />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/posts" element={<Posts />} />
+          <Route path="/categories" element={<Categories />} />
+          <Route path="/tags" element={<Tags />} />
+          <Route path="/comments" element={<Comments />} />
+          <Route path="/pages" element={<Pages />} />
+          <Route path="/media" element={<Media />} />
+          <Route path="/settings" element={<Settings />} />
+          <Route path="/newsletter" element={<Newsletter />} />
+          <Route path="/users" element={<Users />} />
+          <Route path="/roles" element={<Roles />} />
+          <Route path="/subscriptions" element={<Subscriptions />} />
+        </Routes>
+      </Layouts>
     </BrowserRouter>
   );
 }
