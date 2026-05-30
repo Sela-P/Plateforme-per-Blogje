@@ -6,6 +6,8 @@ import Categories from './pages/Categories';
 import Tags from './pages/Tags';
 import Comments from './pages/Comments';
 import Pages from './pages/Pages';
+import Media from './pages/Media';
+
 
 function App() {
   return (
@@ -19,6 +21,8 @@ function App() {
         <Route path="/tags" element={<Tags />} />
         <Route path="/comments" element={<Comments />} />
         <Route path="/pages" element={<Pages />} />
+        <Route path="/media" element={<Media />} />
+        
       </Routes>
     </BrowserRouter>
   );
