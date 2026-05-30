@@ -28,7 +28,7 @@ function Layout({ children }) {
 function App() {
   return (
     <BrowserRouter>
-      <Layouts>
+      <Layout>
         <Routes>
           <Route path="/" element={<Login />} />
           <Route path="/login" element={<Login />} />
@@ -45,7 +45,7 @@ function App() {
           <Route path="/roles" element={<Roles />} />
           <Route path="/subscriptions" element={<Subscriptions />} />
         </Routes>
-      </Layouts>
+      </Layout>
     </BrowserRouter>
   );
 }
