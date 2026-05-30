@@ -13,10 +13,12 @@ import Newsletter from './pages/Newsletter';
 import Users from './pages/Users';
 import Roles from './pages/Roles';
 import Subscriptions from './pages/Subscriptions';
+import Register from './pages/Register';
+import PrivateRoute from './components/PrivateRoute';
 
 function Layout({ children }) {
   const location = useLocation();
-  const isLogin = location.pathname === '/login' || location.pathname === '/';
+  const isLogin = location.pathname === '/login' || location.pathname === '/' || location.pathname === '/register';
   return (
     <div className="d-flex">
       {!isLogin && <Sidebar />}
@@ -32,18 +34,19 @@ function App() {
         <Routes>
           <Route path="/" element={<Login />} />
           <Route path="/login" element={<Login />} />
-          <Route path="/dashboard" element={<Dashboard />} />
-          <Route path="/posts" element={<Posts />} />
-          <Route path="/categories" element={<Categories />} />
-          <Route path="/tags" element={<Tags />} />
-          <Route path="/comments" element={<Comments />} />
-          <Route path="/pages" element={<Pages />} />
-          <Route path="/media" element={<Media />} />
-          <Route path="/settings" element={<Settings />} />
-          <Route path="/newsletter" element={<Newsletter />} />
-          <Route path="/users" element={<Users />} />
-          <Route path="/roles" element={<Roles />} />
-          <Route path="/subscriptions" element={<Subscriptions />} />
+          <Route path="/register" element={<Register />} />
+          <Route path="/dashboard" element={<PrivateRoute><Dashboard /></PrivateRoute>} />
+          <Route path="/posts" element={<PrivateRoute><Posts /></PrivateRoute>} />
+          <Route path="/categories" element={<PrivateRoute><Categories /></PrivateRoute>} />
+          <Route path="/tags" element={<PrivateRoute><Tags /></PrivateRoute>} />
+          <Route path="/comments" element={<PrivateRoute><Comments /></PrivateRoute>} />
+          <Route path="/pages" element={<PrivateRoute><Pages /></PrivateRoute>} />
+          <Route path="/media" element={<PrivateRoute><Media /></PrivateRoute>} />
+          <Route path="/settings" element={<PrivateRoute><Settings /></PrivateRoute>} />
+          <Route path="/newsletter" element={<PrivateRoute><Newsletter /></PrivateRoute>} />
+          <Route path="/users" element={<PrivateRoute><Users /></PrivateRoute>} />
+          <Route path="/roles" element={<PrivateRoute><Roles /></PrivateRoute>} />
+          <Route path="/subscriptions" element={<PrivateRoute><Subscriptions /></PrivateRoute>} />
         </Routes>
       </Layout>
     </BrowserRouter>
