@@ -11,6 +11,7 @@ import Settings from './pages/Settings';
 import Newsletter from './pages/Newsletter';
 import Users from './pages/Users';
 import Roles from './pages/Roles';
+import Subscriptions from './pages/Subscriptions';
 
 
 function App() {
@@ -30,6 +31,7 @@ function App() {
         <Route path="/newsletter" element={<Newsletter />} />
         <Route path="/users" element={<Users />} />
         <Route path="/roles" element={<Roles />} />
+        <Route path="/subscriptions" element={<Subscriptions />} />
 
       </Routes>
     </BrowserRouter>
