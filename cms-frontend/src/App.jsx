@@ -4,6 +4,7 @@ import Dashboard from './pages/Dashboard';
 import Posts from './pages/Posts';
 import Categories from './pages/Categories';
 import Tags from './pages/Tags';
+import Comments from './pages/Comments';
 
 function App() {
   return (
@@ -15,6 +16,7 @@ function App() {
         <Route path="/posts" element={<Posts />} />
         <Route path="/categories" element={<Categories />} />
         <Route path="/tags" element={<Tags />} />
+        <Route path="/comments" element={<Comments />} />
       </Routes>
     </BrowserRouter>
   );
