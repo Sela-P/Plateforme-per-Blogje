@@ -8,6 +8,7 @@ import Comments from './pages/Comments';
 import Pages from './pages/Pages';
 import Media from './pages/Media';
 import Settings from './pages/Settings';
+import Newsletter from './pages/Newsletter';
 
 
 function App() {
@@ -24,6 +25,7 @@ function App() {
         <Route path="/pages" element={<Pages />} />
         <Route path="/media" element={<Media />} />
         <Route path="/settings" element={<Settings />} />
+        <Route path="/newsletter" element={<Newsletter />} />
 
       </Routes>
     </BrowserRouter>
