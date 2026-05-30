@@ -9,6 +9,7 @@ import Pages from './pages/Pages';
 import Media from './pages/Media';
 import Settings from './pages/Settings';
 import Newsletter from './pages/Newsletter';
+import Users from './pages/Users';
 
 
 function App() {
@@ -26,6 +27,7 @@ function App() {
         <Route path="/media" element={<Media />} />
         <Route path="/settings" element={<Settings />} />
         <Route path="/newsletter" element={<Newsletter />} />
+        <Route path="/users" element={<Users />} />
 
       </Routes>
     </BrowserRouter>
