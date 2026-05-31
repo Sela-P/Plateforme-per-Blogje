@@ -1,7 +1,8 @@
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 
 function Sidebar() {
   const navigate = useNavigate();
+  const location = useLocation();
 
   const logout = () => {
     localStorage.removeItem('token');
@@ -9,24 +10,56 @@ function Sidebar() {
     navigate('/login');
   };
 
+  const links = [
+    { path: '/dashboard', label: 'Dashboard', icon: 'ti-home' },
+    { path: '/posts', label: 'Posts', icon: 'ti-file-text' },
+    { path: '/categories', label: 'Categories', icon: 'ti-category' },
+    { path: '/tags', label: 'Tags', icon: 'ti-tag' },
+    { path: '/comments', label: 'Comments', icon: 'ti-message' },
+    { path: '/pages', label: 'Pages', icon: 'ti-layout' },
+    { path: '/media', label: 'Media', icon: 'ti-photo' },
+    { path: '/settings', label: 'Settings', icon: 'ti-settings' },
+    { path: '/newsletter', label: 'Newsletter', icon: 'ti-mail' },
+    { path: '/users', label: 'Users', icon: 'ti-users' },
+    { path: '/roles', label: 'Roles', icon: 'ti-shield' },
+    { path: '/subscriptions', label: 'Subscriptions', icon: 'ti-credit-card' },
+  ];
+
   return (
-    <div className="d-flex flex-column p-3 bg-dark text-white" style={{ width: '250px', minHeight: '100vh' }}>
-      <h5 className="text-center mb-4">CMS Blog</h5>
-      <ul className="nav nav-pills flex-column mb-auto">
-        <li className="nav-item mb-1"><Link to="/dashboard" className="nav-link text-white">Dashboard</Link></li>
-        <li className="nav-item mb-1"><Link to="/posts" className="nav-link text-white">Artikujt</Link></li>
-        <li className="nav-item mb-1"><Link to="/categories" className="nav-link text-white">Kategoritë</Link></li>
-        <li className="nav-item mb-1"><Link to="/tags" className="nav-link text-white">Etiketat</Link></li>
-        <li className="nav-item mb-1"><Link to="/comments" className="nav-link text-white">Komentet</Link></li>
-        <li className="nav-item mb-1"><Link to="/pages" className="nav-link text-white">Faqet Statike</Link></li>
-        <li className="nav-item mb-1"><Link to="/media" className="nav-link text-white">Media</Link></li>
-        <li className="nav-item mb-1"><Link to="/settings" className="nav-link text-white">Konfigurimet</Link></li>
-        <li className="nav-item mb-1"><Link to="/newsletter" className="nav-link text-white">Newsletter</Link></li>
-        <li className="nav-item mb-1"><Link to="/users" className="nav-link text-white">Përdoruesit</Link></li>
-        <li className="nav-item mb-1"><Link to="/roles" className="nav-link text-white">Rolet</Link></li>
-        <li className="nav-item mb-1"><Link to="/subscriptions" className="nav-link text-white">Abonimet</Link></li>
-      </ul>
-      <button className="btn btn-outline-light mt-3" onClick={logout}>Dil</button>
+    <div className="sidebar">
+      <div className="sidebar-brand">
+        <h5>CMS Blog</h5>
+        <span>Admin Panel</span>
+      </div>
+      <nav className="sidebar-nav">
+        {links.map(link => (
+          <Link
+            key={link.path}
+            to={link.path}
+            className={`sidebar-link ${location.pathname === link.path ? 'active' : ''}`}
+          >
+            <i className={`ti ${link.icon}`} aria-hidden="true"></i>
+            {link.label}
+          </Link>
+        ))}
+      </nav>
+      <div className="sidebar-footer">
+        <button
+          onClick={logout}
+          style={{
+            width: '100%',
+            background: 'transparent',
+            border: '1px solid #fde8d0',
+            color: '#b06030',
+            padding: '8px',
+            borderRadius: '8px',
+            fontSize: '13px',
+            cursor: 'pointer'
+          }}
+        >
+          Logout
+        </button>
+      </div>
     </div>
   );
 }
