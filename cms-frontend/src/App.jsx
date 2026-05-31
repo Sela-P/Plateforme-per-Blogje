@@ -17,6 +17,8 @@ import Register from './pages/Register';
 import PrivateRoute from './components/PrivateRoute';
 import PublicRoute from './components/PublicRoute';
 import Home from './pages/public/Home';
+import PostDetail from './pages/public/PostDetail';
+import CreatePost from './pages/public/CreatePost';
 
 function Layout({ children }) {
   const location = useLocation();
@@ -50,6 +52,8 @@ function App() {
           <Route path="/roles" element={<PrivateRoute adminOnly><Roles /></PrivateRoute>} />
           <Route path="/subscriptions" element={<PrivateRoute adminOnly><Subscriptions /></PrivateRoute>} />
           <Route path="/blog" element={<PublicRoute><Home /></PublicRoute>} />
+          <Route path="/blog/post/:id" element={<PublicRoute><PostDetail /></PublicRoute>} />
+          <Route path="/blog/create" element={<PublicRoute><CreatePost /></PublicRoute>} />
         </Routes>
       </Layout>
     </BrowserRouter>
