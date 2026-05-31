@@ -36,57 +36,81 @@ function Media() {
   };
 
   const handleDelete = async (id) => {
-    if (window.confirm('Je i sigurt?')) {
+    if (window.confirm('Are you sure?')) {
       await API.delete(`/media/${id}`);
       fetchMedia();
     }
   };
 
   return (
-    <div className="container mt-4">
-      <h3>Menaxhimi i Mediave</h3>
-      <form onSubmit={handleSubmit} className="card p-3 mb-4">
-        <div className="mb-2">
-          <input className="form-control" placeholder="Emri i skedarit" value={form.emri_skedarit}
-            onChange={e => setForm({ ...form, emri_skedarit: e.target.value })} required />
+    <div className="main-content">
+      <div className="topbar">
+        <p style={{ fontWeight: '600', fontSize: '15px', color: '#7c3a00' }}>Media</p>
+        <div className="avatar-circle">A</div>
+      </div>
+      <div className="page-content">
+        <div className="content-card">
+          <div className="card-title">{editing ? 'Edit Media' : 'Add New Media'}</div>
+          <form onSubmit={handleSubmit}>
+            <label className="form-label-custom">File Name</label>
+            <input className="form-control-custom" placeholder="filename.jpg" value={form.emri_skedarit}
+              onChange={e => setForm({ ...form, emri_skedarit: e.target.value })} required />
+            <label className="form-label-custom">Type</label>
+            <select className="form-control-custom" value={form.lloji}
+              onChange={e => setForm({ ...form, lloji: e.target.value })}>
+              <option value="">Select type...</option>
+              <option value="image">Image</option>
+              <option value="video">Video</option>
+              <option value="document">Document</option>
+            </select>
+            <label className="form-label-custom">URL</label>
+            <input className="form-control-custom" placeholder="https://..." value={form.rruga}
+              onChange={e => setForm({ ...form, rruga: e.target.value })} required />
+            {form.rruga && form.lloji === 'image' && (
+              <img src={form.rruga} alt="preview" style={{ width: '100%', maxHeight: '150px', objectFit: 'cover', borderRadius: '8px', marginBottom: '12px' }} />
+            )}
+            <div style={{ display: 'flex', gap: '8px' }}>
+              <button type="submit" className="btn-primary-custom">{editing ? 'Update' : 'Add Media'}</button>
+              {editing && <button type="button" className="btn-edit-custom" onClick={() => setEditing(null)}>Cancel</button>}
+            </div>
+          </form>
         </div>
-        <div className="mb-2">
-          <input className="form-control" placeholder="Lloji (image/video)" value={form.lloji}
-            onChange={e => setForm({ ...form, lloji: e.target.value })} />
-        </div>
-        <div className="mb-2">
-          <input className="form-control" placeholder="Rruga (URL)" value={form.rruga}
-            onChange={e => setForm({ ...form, rruga: e.target.value })} required />
-        </div>
-        <button className="btn btn-primary">{editing ? 'Ndrysho' : 'Shto'}</button>
-        {editing && <button className="btn btn-secondary ms-2" onClick={() => setEditing(null)}>Anulo</button>}
-      </form>
 
-      <table className="table table-bordered">
-        <thead>
-          <tr>
-            <th>ID</th>
-            <th>Emri</th>
-            <th>Lloji</th>
-            <th>Rruga</th>
-            <th>Veprime</th>
-          </tr>
-        </thead>
-        <tbody>
-          {media.map(m => (
-            <tr key={m.id}>
-              <td>{m.id}</td>
-              <td>{m.emri_skedarit}</td>
-              <td>{m.lloji}</td>
-              <td>{m.rruga}</td>
-              <td>
-                <button className="btn btn-warning btn-sm me-2" onClick={() => handleEdit(m)}>Ndrysho</button>
-                <button className="btn btn-danger btn-sm" onClick={() => handleDelete(m.id)}>Fshi</button>
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
+        <div className="content-card">
+          <div className="card-title">All Media</div>
+          <table className="table-clean">
+            <thead>
+              <tr>
+                <th>Preview</th>
+                <th>File Name</th>
+                <th>Type</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              {media.map(m => (
+                <tr key={m.id}>
+                  <td>
+                    {m.lloji === 'image' ? (
+                      <img src={m.rruga} alt={m.emri_skedarit} style={{ width: '50px', height: '35px', objectFit: 'cover', borderRadius: '6px' }} />
+                    ) : (
+                      <div style={{ width: '50px', height: '35px', background: '#fde8d0', borderRadius: '6px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                        <i className="ti ti-file" style={{ color: '#b06030' }} aria-hidden="true"></i>
+                      </div>
+                    )}
+                  </td>
+                  <td>{m.emri_skedarit}</td>
+                  <td style={{ color: '#b06030' }}>{m.lloji}</td>
+                  <td>
+                    <button className="btn-edit-custom" onClick={() => handleEdit(m)}>Edit</button>
+                    <button className="btn-delete-custom" onClick={() => handleDelete(m.id)}>Delete</button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </div>
     </div>
   );
 }
