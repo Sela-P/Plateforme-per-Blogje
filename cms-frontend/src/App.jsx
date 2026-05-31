@@ -20,7 +20,7 @@ import Home from './pages/public/Home';
 
 function Layout({ children }) {
   const location = useLocation();
-  const isLogin = location.pathname === '/login' || location.pathname === '/' || location.pathname === '/register';
+  const isLogin = location.pathname === '/login' || location.pathname === '/' || location.pathname === '/register' || location.pathname.startsWith('/blog');
   return (
     <div className="d-flex">
       {!isLogin && <Sidebar />}
