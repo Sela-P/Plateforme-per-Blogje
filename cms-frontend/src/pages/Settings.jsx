@@ -36,57 +36,65 @@ function Settings() {
   };
 
   const handleDelete = async (id) => {
-    if (window.confirm('Je i sigurt?')) {
+    if (window.confirm('Are you sure?')) {
       await API.delete(`/settings/${id}`);
       fetchSettings();
     }
   };
 
   return (
-    <div className="container mt-4">
-      <h3>Konfigurimet</h3>
-      <form onSubmit={handleSubmit} className="card p-3 mb-4">
-        <div className="mb-2">
-          <input className="form-control" placeholder="Çelësi" value={form.celesi}
-            onChange={e => setForm({ ...form, celesi: e.target.value })} required />
+    <div className="main-content">
+      <div className="topbar">
+        <p style={{ fontWeight: '600', fontSize: '15px', color: '#7c3a00' }}>Settings</p>
+        <div className="avatar-circle">A</div>
+      </div>
+      <div className="page-content">
+        <div className="content-card">
+          <div className="card-title">{editing ? 'Edit Setting' : 'Add New Setting'}</div>
+          <form onSubmit={handleSubmit}>
+            <label className="form-label-custom">Key</label>
+            <input className="form-control-custom" placeholder="setting_key" value={form.celesi}
+              onChange={e => setForm({ ...form, celesi: e.target.value })} required />
+            <label className="form-label-custom">Value</label>
+            <input className="form-control-custom" placeholder="Setting value..." value={form.vlera}
+              onChange={e => setForm({ ...form, vlera: e.target.value })} />
+            <label className="form-label-custom">Description</label>
+            <input className="form-control-custom" placeholder="Description..." value={form.pershkrimi}
+              onChange={e => setForm({ ...form, pershkrimi: e.target.value })} />
+            <div style={{ display: 'flex', gap: '8px' }}>
+              <button type="submit" className="btn-primary-custom">{editing ? 'Update' : 'Add Setting'}</button>
+              {editing && <button type="button" className="btn-edit-custom" onClick={() => setEditing(null)}>Cancel</button>}
+            </div>
+          </form>
         </div>
-        <div className="mb-2">
-          <input className="form-control" placeholder="Vlera" value={form.vlera}
-            onChange={e => setForm({ ...form, vlera: e.target.value })} />
-        </div>
-        <div className="mb-2">
-          <input className="form-control" placeholder="Përshkrimi" value={form.pershkrimi}
-            onChange={e => setForm({ ...form, pershkrimi: e.target.value })} />
-        </div>
-        <button className="btn btn-primary">{editing ? 'Ndrysho' : 'Shto'}</button>
-        {editing && <button className="btn btn-secondary ms-2" onClick={() => setEditing(null)}>Anulo</button>}
-      </form>
 
-      <table className="table table-bordered">
-        <thead>
-          <tr>
-            <th>ID</th>
-            <th>Çelësi</th>
-            <th>Vlera</th>
-            <th>Përshkrimi</th>
-            <th>Veprime</th>
-          </tr>
-        </thead>
-        <tbody>
-          {settings.map(s => (
-            <tr key={s.id}>
-              <td>{s.id}</td>
-              <td>{s.celesi}</td>
-              <td>{s.vlera}</td>
-              <td>{s.pershkrimi}</td>
-              <td>
-                <button className="btn btn-warning btn-sm me-2" onClick={() => handleEdit(s)}>Ndrysho</button>
-                <button className="btn btn-danger btn-sm" onClick={() => handleDelete(s.id)}>Fshi</button>
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
+        <div className="content-card">
+          <div className="card-title">All Settings</div>
+          <table className="table-clean">
+            <thead>
+              <tr>
+                <th>Key</th>
+                <th>Value</th>
+                <th>Description</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              {settings.map(s => (
+                <tr key={s.id}>
+                  <td style={{ fontWeight: '500', color: '#7c3a00' }}>{s.celesi}</td>
+                  <td>{s.vlera}</td>
+                  <td style={{ color: '#b06030' }}>{s.pershkrimi}</td>
+                  <td>
+                    <button className="btn-edit-custom" onClick={() => handleEdit(s)}>Edit</button>
+                    <button className="btn-delete-custom" onClick={() => handleDelete(s.id)}>Delete</button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </div>
     </div>
   );
 }
