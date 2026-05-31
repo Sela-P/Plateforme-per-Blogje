@@ -36,18 +36,18 @@ function App() {
           <Route path="/" element={<Login />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
-          <Route path="/dashboard" element={<PrivateRoute><Dashboard /></PrivateRoute>} />
-          <Route path="/posts" element={<PrivateRoute><Posts /></PrivateRoute>} />
-          <Route path="/categories" element={<PrivateRoute><Categories /></PrivateRoute>} />
-          <Route path="/tags" element={<PrivateRoute><Tags /></PrivateRoute>} />
-          <Route path="/comments" element={<PrivateRoute><Comments /></PrivateRoute>} />
-          <Route path="/pages" element={<PrivateRoute><Pages /></PrivateRoute>} />
-          <Route path="/media" element={<PrivateRoute><Media /></PrivateRoute>} />
-          <Route path="/settings" element={<PrivateRoute><Settings /></PrivateRoute>} />
-          <Route path="/newsletter" element={<PrivateRoute><Newsletter /></PrivateRoute>} />
-          <Route path="/users" element={<PrivateRoute><Users /></PrivateRoute>} />
-          <Route path="/roles" element={<PrivateRoute><Roles /></PrivateRoute>} />
-          <Route path="/subscriptions" element={<PrivateRoute><Subscriptions /></PrivateRoute>} />
+          <Route path="/dashboard" element={<PrivateRoute adminOnly><Dashboard /></PrivateRoute>} />
+          <Route path="/posts" element={<PrivateRoute adminOnly><Posts /></PrivateRoute>} />
+          <Route path="/categories" element={<PrivateRoute adminOnly><Categories /></PrivateRoute>} />
+          <Route path="/tags" element={<PrivateRoute adminOnly><Tags /></PrivateRoute>} />
+          <Route path="/comments" element={<PrivateRoute adminOnly><Comments /></PrivateRoute>} />
+          <Route path="/pages" element={<PrivateRoute adminOnly><Pages /></PrivateRoute>} />
+          <Route path="/media" element={<PrivateRoute adminOnly><Media /></PrivateRoute>} />
+          <Route path="/settings" element={<PrivateRoute adminOnly><Settings /></PrivateRoute>} />
+          <Route path="/newsletter" element={<PrivateRoute adminOnly><Newsletter /></PrivateRoute>} />
+          <Route path="/users" element={<PrivateRoute adminOnly><Users /></PrivateRoute>} />
+          <Route path="/roles" element={<PrivateRoute adminOnly><Roles /></PrivateRoute>} />
+          <Route path="/subscriptions" element={<PrivateRoute adminOnly><Subscriptions /></PrivateRoute>} />
           <Route path="/blog" element={<Home />} />
         </Routes>
       </Layout>
