@@ -5,7 +5,14 @@ const { getMedia, getMediaById, createMedia, updateMedia, deleteMedia } = requir
 
 router.get('/', getMedia);
 router.get('/:id', getMediaById);
-router.post('/', verifyToken, createMedia);
+
+router.post('/', verifyToken, (req, res, next) => {
+  req.app.locals.upload.single('file')(req, res, (err) => {
+    if (err) return res.status(400).json({ error: err.message });
+    next();
+  });
+}, createMedia);
+
 router.put('/:id', verifyToken, updateMedia);
 router.delete('/:id', verifyToken, deleteMedia);
 

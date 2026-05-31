@@ -20,13 +20,15 @@ const getMediaById = async (req, res) => {
 };
 
 const createMedia = async (req, res) => {
-  const { emri_skedarit, lloji, rruga } = req.body;
   try {
+    const file = req.file;
+    if (!file) return res.status(400).json({ message: 'Nuk u ngarkua skedari' });
+    
     const [r] = await db.query(
       'INSERT INTO Media (emri_skedarit, lloji, rruga, user_id) VALUES (?,?,?,?)',
-      [emri_skedarit, lloji, rruga, req.user.id]
+      [file.originalname, file.mimetype, `/uploads/${file.filename}`, req.user.id]
     );
-    res.status(201).json({ message: 'U krijua', id: r.insertId });
+    res.status(201).json({ message: 'U ngarkua', id: r.insertId, rruga: `/uploads/${file.filename}` });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
