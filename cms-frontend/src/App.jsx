@@ -15,6 +15,7 @@ import Roles from './pages/Roles';
 import Subscriptions from './pages/Subscriptions';
 import Register from './pages/Register';
 import PrivateRoute from './components/PrivateRoute';
+import PublicRoute from './components/PublicRoute';
 import Home from './pages/public/Home';
 
 function Layout({ children }) {
@@ -48,7 +49,7 @@ function App() {
           <Route path="/users" element={<PrivateRoute adminOnly><Users /></PrivateRoute>} />
           <Route path="/roles" element={<PrivateRoute adminOnly><Roles /></PrivateRoute>} />
           <Route path="/subscriptions" element={<PrivateRoute adminOnly><Subscriptions /></PrivateRoute>} />
-          <Route path="/blog" element={<Home />} />
+          <Route path="/blog" element={<PublicRoute><Home /></PublicRoute>} />
         </Routes>
       </Layout>
     </BrowserRouter>
