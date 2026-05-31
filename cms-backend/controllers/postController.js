@@ -12,7 +12,7 @@ const getPosts = async (req, res) => {
 const getPost = async (req, res) => {
   try {
     const [rows] = await db.query('SELECT * FROM Posts WHERE id = ?', [req.params.id]);
-    if (rows.length === 0) return res.status(404).json({ message: 'Nuk u gjet' });
+    if (rows.length === 0) return res.status(404).json({ message: 'Not found!' });
     res.json(rows[0]);
   } catch (err) {
     res.status(500).json({ error: err.message });
@@ -26,7 +26,7 @@ const createPost = async (req, res) => {
       'INSERT INTO Posts (titulli, permbajtja, user_id, category_id, statusi, imazhi) VALUES (?,?,?,?,?,?)',
       [titulli, permbajtja, req.user.id, category_id, statusi || 'draft', imazhi]
     );
-    res.status(201).json({ message: 'U krijua', id: r.insertId });
+    res.status(201).json({ message: 'Created successfully!', id: r.insertId });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
@@ -39,7 +39,7 @@ const updatePost = async (req, res) => {
       'UPDATE Posts SET titulli=?, permbajtja=?, category_id=?, statusi=?, imazhi=? WHERE id=?',
       [titulli, permbajtja, category_id, statusi, imazhi, req.params.id]
     );
-    res.json({ message: 'U ndryshua' });
+    res.json({ message: 'Changed successfully!' });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
@@ -48,7 +48,7 @@ const updatePost = async (req, res) => {
 const deletePost = async (req, res) => {
   try {
     await db.query('DELETE FROM Posts WHERE id=?', [req.params.id]);
-    res.json({ message: 'U fshi' });
+    res.json({ message: 'Deleted successfully!' });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }

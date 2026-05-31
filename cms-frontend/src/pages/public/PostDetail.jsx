@@ -17,16 +17,19 @@ function PostDetail() {
 
   return (
     <div>
-      {/* Navbar */}
       <nav style={{ background: '#7c3a00', padding: '12px 24px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
         <h4 style={{ color: 'white', margin: 0, cursor: 'pointer' }} onClick={() => navigate('/blog')}>← CMS Blog</h4>
       </nav>
 
-      {/* Post */}
       <div style={{ maxWidth: '800px', margin: '32px auto', padding: '0 16px' }}>
         <h1 style={{ color: '#7c3a00' }}>{post.titulli}</h1>
-        <p style={{ color: '#999', fontSize: '13px' }}>{new Date(post.data_publikimit).toLocaleDateString()}</p>
+        <p style={{ color: '#999', fontSize: '13px' }}>{post.data_publikimit ? new Date(post.data_publikimit).toLocaleDateString('sq-AL') : 'Pa datë'}</p>
         <hr />
+        {post.imazhi && (
+          <img src={`http://localhost:5000${post.imazhi}`}
+            style={{ width: '100%', maxHeight: '400px', objectFit: 'cover', borderRadius: '10px', marginBottom: '16px' }}
+            alt={post.titulli} />
+        )}
         <div style={{ lineHeight: '1.8', color: '#333' }}>{post.permbajtja}</div>
       </div>
     </div>
