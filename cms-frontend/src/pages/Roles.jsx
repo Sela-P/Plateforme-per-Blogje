@@ -36,45 +36,61 @@ function Roles() {
   };
 
   const handleDelete = async (id) => {
-    if (window.confirm('Je i sigurt?')) {
+    if (window.confirm('Are you sure?')) {
       await API.delete(`/roles/${id}`);
       fetchRoles();
     }
   };
 
   return (
-    <div className="container mt-4">
-      <h3>Menaxhimi i Roleve</h3>
-      <form onSubmit={handleSubmit} className="card p-3 mb-4">
-        <div className="mb-2">
-          <input className="form-control" placeholder="Emërtimi i rolit" value={form.emertimi}
-            onChange={e => setForm({ ...form, emertimi: e.target.value })} required />
+    <div className="main-content">
+      <div className="topbar">
+        <p style={{ fontWeight: '600', fontSize: '15px', color: '#7c3a00' }}>Roles</p>
+        <div className="avatar-circle">A</div>
+      </div>
+      <div className="page-content">
+        <div className="content-card">
+          <div className="card-title">{editing ? 'Edit Role' : 'Add New Role'}</div>
+          <form onSubmit={handleSubmit}>
+            <label className="form-label-custom">Role Name</label>
+            <input className="form-control-custom" placeholder="e.g. Admin, Editor, Reader" value={form.emertimi}
+              onChange={e => setForm({ ...form, emertimi: e.target.value })} required />
+            <div style={{ display: 'flex', gap: '8px' }}>
+              <button type="submit" className="btn-primary-custom">{editing ? 'Update' : 'Add Role'}</button>
+              {editing && <button type="button" className="btn-edit-custom" onClick={() => setEditing(null)}>Cancel</button>}
+            </div>
+          </form>
         </div>
-        <button className="btn btn-primary">{editing ? 'Ndrysho' : 'Shto'}</button>
-        {editing && <button className="btn btn-secondary ms-2" onClick={() => setEditing(null)}>Anulo</button>}
-      </form>
 
-      <table className="table table-bordered">
-        <thead>
-          <tr>
-            <th>ID</th>
-            <th>Emërtimi</th>
-            <th>Veprime</th>
-          </tr>
-        </thead>
-        <tbody>
-          {roles.map(r => (
-            <tr key={r.id}>
-              <td>{r.id}</td>
-              <td>{r.emertimi}</td>
-              <td>
-                <button className="btn btn-warning btn-sm me-2" onClick={() => handleEdit(r)}>Ndrysho</button>
-                <button className="btn btn-danger btn-sm" onClick={() => handleDelete(r.id)}>Fshi</button>
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
+        <div className="content-card">
+          <div className="card-title">All Roles ({roles.length})</div>
+          <table className="table-clean">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Role Name</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              {roles.map(r => (
+                <tr key={r.id}>
+                  <td>{r.id}</td>
+                  <td>
+                    <span style={{ background: '#fff0e6', color: '#c05621', padding: '3px 10px', borderRadius: '20px', fontSize: '12px', fontWeight: '500' }}>
+                      {r.emertimi}
+                    </span>
+                  </td>
+                  <td>
+                    <button className="btn-edit-custom" onClick={() => handleEdit(r)}>Edit</button>
+                    <button className="btn-delete-custom" onClick={() => handleDelete(r.id)}>Delete</button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </div>
     </div>
   );
 }
