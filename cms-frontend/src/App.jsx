@@ -15,6 +15,7 @@ import Roles from './pages/Roles';
 import Subscriptions from './pages/Subscriptions';
 import Register from './pages/Register';
 import PrivateRoute from './components/PrivateRoute';
+import Home from './pages/public/Home';
 
 function Layout({ children }) {
   const location = useLocation();
@@ -47,6 +48,9 @@ function App() {
           <Route path="/users" element={<PrivateRoute><Users /></PrivateRoute>} />
           <Route path="/roles" element={<PrivateRoute><Roles /></PrivateRoute>} />
           <Route path="/subscriptions" element={<PrivateRoute><Subscriptions /></PrivateRoute>} />
+          <Route path="/blog" element={<Home />} />
+          function Home() {
+export default Home;
         </Routes>
       </Layout>
     </BrowserRouter>
