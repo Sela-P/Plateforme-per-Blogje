@@ -36,64 +36,73 @@ function Pages() {
   };
 
   const handleDelete = async (id) => {
-    if (window.confirm('Je i sigurt?')) {
+    if (window.confirm('Are you sure?')) {
       await API.delete(`/pages/${id}`);
       fetchPages();
     }
   };
 
   return (
-    <div className="container mt-4">
-      <h3>Menaxhimi i Faqeve Statike</h3>
-      <form onSubmit={handleSubmit} className="card p-3 mb-4">
-        <div className="mb-2">
-          <input className="form-control" placeholder="Titulli" value={form.titulli}
-            onChange={e => setForm({ ...form, titulli: e.target.value })} required />
+    <div className="main-content">
+      <div className="topbar">
+        <p style={{ fontWeight: '600', fontSize: '15px', color: '#7c3a00' }}>Static Pages</p>
+        <div className="avatar-circle">A</div>
+      </div>
+      <div className="page-content">
+        <div className="content-card">
+          <div className="card-title">{editing ? 'Edit Page' : 'Add New Page'}</div>
+          <form onSubmit={handleSubmit}>
+            <label className="form-label-custom">Title</label>
+            <input className="form-control-custom" placeholder="Page title..." value={form.titulli}
+              onChange={e => setForm({ ...form, titulli: e.target.value })} required />
+            <label className="form-label-custom">Content</label>
+            <textarea className="form-control-custom" placeholder="Page content..." rows={4} value={form.permbajtja}
+              onChange={e => setForm({ ...form, permbajtja: e.target.value })} />
+            <label className="form-label-custom">Slug</label>
+            <input className="form-control-custom" placeholder="page-slug" value={form.slug}
+              onChange={e => setForm({ ...form, slug: e.target.value })} required />
+            <label className="form-label-custom">Status</label>
+            <select className="form-control-custom" value={form.statusi}
+              onChange={e => setForm({ ...form, statusi: e.target.value })}>
+              <option value="draft">Draft</option>
+              <option value="published">Published</option>
+            </select>
+            <div style={{ display: 'flex', gap: '8px' }}>
+              <button type="submit" className="btn-primary-custom">{editing ? 'Update' : 'Add Page'}</button>
+              {editing && <button type="button" className="btn-edit-custom" onClick={() => setEditing(null)}>Cancel</button>}
+            </div>
+          </form>
         </div>
-        <div className="mb-2">
-          <textarea className="form-control" placeholder="Përmbajtja" rows={4} value={form.permbajtja}
-            onChange={e => setForm({ ...form, permbajtja: e.target.value })} />
-        </div>
-        <div className="mb-2">
-          <input className="form-control" placeholder="Slug (p.sh. rreth-nesh)" value={form.slug}
-            onChange={e => setForm({ ...form, slug: e.target.value })} required />
-        </div>
-        <div className="mb-2">
-          <select className="form-control" value={form.statusi}
-            onChange={e => setForm({ ...form, statusi: e.target.value })}>
-            <option value="draft">Draft</option>
-            <option value="published">Published</option>
-          </select>
-        </div>
-        <button className="btn btn-primary">{editing ? 'Ndrysho' : 'Shto'}</button>
-        {editing && <button className="btn btn-secondary ms-2" onClick={() => setEditing(null)}>Anulo</button>}
-      </form>
 
-      <table className="table table-bordered">
-        <thead>
-          <tr>
-            <th>ID</th>
-            <th>Titulli</th>
-            <th>Slug</th>
-            <th>Statusi</th>
-            <th>Veprime</th>
-          </tr>
-        </thead>
-        <tbody>
-          {pages.map(p => (
-            <tr key={p.id}>
-              <td>{p.id}</td>
-              <td>{p.titulli}</td>
-              <td>{p.slug}</td>
-              <td>{p.statusi}</td>
-              <td>
-                <button className="btn btn-warning btn-sm me-2" onClick={() => handleEdit(p)}>Ndrysho</button>
-                <button className="btn btn-danger btn-sm" onClick={() => handleDelete(p.id)}>Fshi</button>
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
+        <div className="content-card">
+          <div className="card-title">All Pages</div>
+          <table className="table-clean">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Title</th>
+                <th>Slug</th>
+                <th>Status</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              {pages.map(p => (
+                <tr key={p.id}>
+                  <td>{p.id}</td>
+                  <td>{p.titulli}</td>
+                  <td style={{ color: '#b06030' }}>{p.slug}</td>
+                  <td><span className={`badge-${p.statusi}`}>{p.statusi}</span></td>
+                  <td>
+                    <button className="btn-edit-custom" onClick={() => handleEdit(p)}>Edit</button>
+                    <button className="btn-delete-custom" onClick={() => handleDelete(p.id)}>Delete</button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </div>
     </div>
   );
 }
