@@ -27,7 +27,9 @@ function Home() {
       <nav style={{ background: '#7c3a00', padding: '12px 24px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
         <h4 style={{ color: 'white', margin: 0 }}>CMS Blog</h4>
         <div style={{ display: 'flex', gap: '16px', alignItems: 'center' }}>
-          <span style={{ color: 'white', fontSize: '14px' }}>👤 {user.emri}</span>
+          <button onClick={() => navigate('/blog/profile')} style={{ background: 'transparent', color: 'white', border: '1px solid white', padding: '6px 14px', borderRadius: '6px', cursor: 'pointer' }}>
+            Profile
+          </button>
           <button onClick={() => navigate('/blog/create')} style={{ background: 'white', color: '#7c3a00', border: 'none', padding: '6px 14px', borderRadius: '6px', cursor: 'pointer' }}>
             + Create Post
           </button>
@@ -36,6 +38,7 @@ function Home() {
           </button>
         </div>
       </nav>
+      
 
       <div style={{ maxWidth: '800px', margin: '32px auto', padding: '0 16px' }}>
         {posts.length === 0 ? (
