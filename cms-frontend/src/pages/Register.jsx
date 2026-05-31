@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import axios from 'axios';
-import { useNavigate } from 'react-router-input';
+import { useNavigate } from "react-router-dom";
 
 function Register() {
   const [form, setForm] = useState({ emri: '', email: '', password: '' });
