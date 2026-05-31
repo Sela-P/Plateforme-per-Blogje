@@ -13,12 +13,19 @@ const register = async (req, res) => {
     }
 
     const hashedPassword = await bcrypt.hash(password, 10);
-    await db.query('INSERT INTO Users (emri, email, password) VALUES (?, ?, ?)', 
+    const [result] = await db.query('INSERT INTO Users (emri, email, password) VALUES (?, ?, ?)', 
       [emri, email, hashedPassword]);
 
-    res.status(201).json({ message: 'Registration done successfully' });
+    // Cakto automatikisht rolin 'user'
+    const [roles] = await db.query('SELECT id FROM Roles WHERE emertimi = ?', ['user']);
+    if (roles.length > 0) {
+      await db.query('INSERT INTO UserRoles (user_id, role_id) VALUES (?, ?)', 
+        [result.insertId, roles[0].id]);
+    }
+
+    res.status(201).json({ message: 'Registration completed successfully' });
   } catch (err) {
-    res.status(500).json({ message: 'Server error', error: err.message });
+    res.status(500).json({ message: 'Server Error', error: err.message });
   }
 };
 
