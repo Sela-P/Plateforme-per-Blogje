@@ -36,51 +36,62 @@ function Tags() {
   };
 
   const handleDelete = async (id) => {
-    if (window.confirm('Je i sigurt?')) {
+    if (window.confirm('Are you sure?')) {
       await API.delete(`/tags/${id}`);
       fetchTags();
     }
   };
 
   return (
-    <div className="container mt-4">
-      <h3>Menaxhimi i Etiketave</h3>
-      <form onSubmit={handleSubmit} className="card p-3 mb-4">
-        <div className="mb-2">
-          <input className="form-control" placeholder="Emërtimi" value={form.emertimi}
-            onChange={e => setForm({ ...form, emertimi: e.target.value })} required />
+    <div className="main-content">
+      <div className="topbar">
+        <p style={{ fontWeight: '600', fontSize: '15px', color: '#7c3a00' }}>Tags</p>
+        <div className="avatar-circle">A</div>
+      </div>
+      <div className="page-content">
+        <div className="content-card">
+          <div className="card-title">{editing ? 'Edit Tag' : 'Add New Tag'}</div>
+          <form onSubmit={handleSubmit}>
+            <label className="form-label-custom">Name</label>
+            <input className="form-control-custom" placeholder="Tag name..." value={form.emertimi}
+              onChange={e => setForm({ ...form, emertimi: e.target.value })} required />
+            <label className="form-label-custom">Slug</label>
+            <input className="form-control-custom" placeholder="tag-slug" value={form.slug}
+              onChange={e => setForm({ ...form, slug: e.target.value })} required />
+            <div style={{ display: 'flex', gap: '8px' }}>
+              <button type="submit" className="btn-primary-custom">{editing ? 'Update' : 'Add Tag'}</button>
+              {editing && <button type="button" className="btn-edit-custom" onClick={() => setEditing(null)}>Cancel</button>}
+            </div>
+          </form>
         </div>
-        <div className="mb-2">
-          <input className="form-control" placeholder="Slug (p.sh. react)" value={form.slug}
-            onChange={e => setForm({ ...form, slug: e.target.value })} required />
-        </div>
-        <button className="btn btn-primary">{editing ? 'Ndrysho' : 'Shto'}</button>
-        {editing && <button className="btn btn-secondary ms-2" onClick={() => setEditing(null)}>Anulo</button>}
-      </form>
 
-      <table className="table table-bordered">
-        <thead>
-          <tr>
-            <th>ID</th>
-            <th>Emërtimi</th>
-            <th>Slug</th>
-            <th>Veprime</th>
-          </tr>
-        </thead>
-        <tbody>
-          {tags.map(t => (
-            <tr key={t.id}>
-              <td>{t.id}</td>
-              <td>{t.emertimi}</td>
-              <td>{t.slug}</td>
-              <td>
-                <button className="btn btn-warning btn-sm me-2" onClick={() => handleEdit(t)}>Ndrysho</button>
-                <button className="btn btn-danger btn-sm" onClick={() => handleDelete(t.id)}>Fshi</button>
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
+        <div className="content-card">
+          <div className="card-title">All Tags</div>
+          <table className="table-clean">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Slug</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              {tags.map(t => (
+                <tr key={t.id}>
+                  <td>{t.id}</td>
+                  <td>{t.emertimi}</td>
+                  <td style={{ color: '#b06030' }}>{t.slug}</td>
+                  <td>
+                    <button className="btn-edit-custom" onClick={() => handleEdit(t)}>Edit</button>
+                    <button className="btn-delete-custom" onClick={() => handleDelete(t.id)}>Delete</button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </div>
     </div>
   );
 }
