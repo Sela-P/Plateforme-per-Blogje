@@ -30,59 +30,70 @@ function Comments() {
     fetchComments();
   };
 
-  const handleEdit = (comment) => {
-    setEditing(comment.id);
-    setForm({ post_id: comment.post_id, permbajtja: comment.permbajtja });
+  const handleEdit = (c) => {
+    setEditing(c.id);
+    setForm({ post_id: c.post_id, permbajtja: c.permbajtja });
   };
 
   const handleDelete = async (id) => {
-    if (window.confirm('Je i sigurt?')) {
+    if (window.confirm('Are you sure?')) {
       await API.delete(`/comments/${id}`);
       fetchComments();
     }
   };
 
   return (
-    <div className="container mt-4">
-      <h3>Menaxhimi i Komenteve</h3>
-      <form onSubmit={handleSubmit} className="card p-3 mb-4">
-        <div className="mb-2">
-          <input className="form-control" placeholder="ID e Artikullit" value={form.post_id}
-            onChange={e => setForm({ ...form, post_id: e.target.value })} required />
+    <div className="main-content">
+      <div className="topbar">
+        <p style={{ fontWeight: '600', fontSize: '15px', color: '#7c3a00' }}>Comments</p>
+        <div className="avatar-circle">A</div>
+      </div>
+      <div className="page-content">
+        <div className="content-card">
+          <div className="card-title">{editing ? 'Edit Comment' : 'Add New Comment'}</div>
+          <form onSubmit={handleSubmit}>
+            <label className="form-label-custom">Post ID</label>
+            <input className="form-control-custom" placeholder="Post ID..." value={form.post_id}
+              onChange={e => setForm({ ...form, post_id: e.target.value })} required />
+            <label className="form-label-custom">Content</label>
+            <textarea className="form-control-custom" placeholder="Comment content..." rows={3} value={form.permbajtja}
+              onChange={e => setForm({ ...form, permbajtja: e.target.value })} required />
+            <div style={{ display: 'flex', gap: '8px' }}>
+              <button type="submit" className="btn-primary-custom">{editing ? 'Update' : 'Add Comment'}</button>
+              {editing && <button type="button" className="btn-edit-custom" onClick={() => setEditing(null)}>Cancel</button>}
+            </div>
+          </form>
         </div>
-        <div className="mb-2">
-          <textarea className="form-control" placeholder="Përmbajtja" rows={3} value={form.permbajtja}
-            onChange={e => setForm({ ...form, permbajtja: e.target.value })} required />
-        </div>
-        <button className="btn btn-primary">{editing ? 'Ndrysho' : 'Shto'}</button>
-        {editing && <button className="btn btn-secondary ms-2" onClick={() => setEditing(null)}>Anulo</button>}
-      </form>
 
-      <table className="table table-bordered">
-        <thead>
-          <tr>
-            <th>ID</th>
-            <th>Post ID</th>
-            <th>Përmbajtja</th>
-            <th>Statusi</th>
-            <th>Veprime</th>
-          </tr>
-        </thead>
-        <tbody>
-          {comments.map(c => (
-            <tr key={c.id}>
-              <td>{c.id}</td>
-              <td>{c.post_id}</td>
-              <td>{c.permbajtja}</td>
-              <td>{c.statusi}</td>
-              <td>
-                <button className="btn btn-warning btn-sm me-2" onClick={() => handleEdit(c)}>Ndrysho</button>
-                <button className="btn btn-danger btn-sm" onClick={() => handleDelete(c.id)}>Fshi</button>
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
+        <div className="content-card">
+          <div className="card-title">All Comments</div>
+          <table className="table-clean">
+            <thead>
+              <tr>
+                <th>Post ID</th>
+                <th>Content</th>
+                <th>Status</th>
+                <th>Date</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              {comments.map(c => (
+                <tr key={c.id}>
+                  <td>{c.post_id}</td>
+                  <td>{c.permbajtja}</td>
+                  <td><span className={`badge-${c.statusi === 'approved' ? 'published' : 'draft'}`}>{c.statusi}</span></td>
+                  <td style={{ color: '#b06030' }}>{new Date(c.data).toLocaleDateString()}</td>
+                  <td>
+                    <button className="btn-edit-custom" onClick={() => handleEdit(c)}>Edit</button>
+                    <button className="btn-delete-custom" onClick={() => handleDelete(c.id)}>Delete</button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </div>
     </div>
   );
 }
