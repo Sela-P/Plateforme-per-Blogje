@@ -25,47 +25,55 @@ function Newsletter() {
   };
 
   const handleDelete = async (id) => {
-    if (window.confirm('Je i sigurt?')) {
+    if (window.confirm('Are you sure?')) {
       await API.delete(`/newsletter/${id}`);
       fetchSubscribers();
     }
   };
 
   return (
-    <div className="container mt-4">
-      <h3>Abonentët e Newsletter</h3>
-      <form onSubmit={handleSubmit} className="card p-3 mb-4">
-        <div className="mb-2">
-          <input className="form-control" placeholder="Email" type="email" value={email}
-            onChange={e => setEmail(e.target.value)} required />
+    <div className="main-content">
+      <div className="topbar">
+        <p style={{ fontWeight: '600', fontSize: '15px', color: '#7c3a00' }}>Newsletter</p>
+        <div className="avatar-circle">A</div>
+      </div>
+      <div className="page-content">
+        <div className="content-card">
+          <div className="card-title">Add Subscriber</div>
+          <form onSubmit={handleSubmit}>
+            <label className="form-label-custom">Email</label>
+            <input className="form-control-custom" placeholder="email@example.com" type="email" value={email}
+              onChange={e => setEmail(e.target.value)} required />
+            <button type="submit" className="btn-primary-custom">Add Subscriber</button>
+          </form>
         </div>
-        <button className="btn btn-primary">Shto Abonent</button>
-      </form>
 
-      <table className="table table-bordered">
-        <thead>
-          <tr>
-            <th>ID</th>
-            <th>Email</th>
-            <th>Statusi</th>
-            <th>Data</th>
-            <th>Veprime</th>
-          </tr>
-        </thead>
-        <tbody>
-          {subscribers.map(s => (
-            <tr key={s.id}>
-              <td>{s.id}</td>
-              <td>{s.email}</td>
-              <td>{s.statusi}</td>
-              <td>{new Date(s.data_abonimit).toLocaleDateString()}</td>
-              <td>
-                <button className="btn btn-danger btn-sm" onClick={() => handleDelete(s.id)}>Fshi</button>
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
+        <div className="content-card">
+          <div className="card-title">All Subscribers ({subscribers.length})</div>
+          <table className="table-clean">
+            <thead>
+              <tr>
+                <th>Email</th>
+                <th>Status</th>
+                <th>Date</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              {subscribers.map(s => (
+                <tr key={s.id}>
+                  <td>{s.email}</td>
+                  <td><span className={`badge-${s.statusi === 'active' ? 'published' : 'archived'}`}>{s.statusi}</span></td>
+                  <td style={{ color: '#b06030' }}>{new Date(s.data_abonimit).toLocaleDateString()}</td>
+                  <td>
+                    <button className="btn-delete-custom" onClick={() => handleDelete(s.id)}>Delete</button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </div>
     </div>
   );
 }
