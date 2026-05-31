@@ -21,28 +21,30 @@ function Login() {
   };
 
   return (
-    <div className="container mt-5">
-      <div className="row justify-content-center">
-        <div className="col-md-4">
-          <div className="card p-4">
-            <h3 className="text-center mb-4">Login</h3>
-            {error && <div className="alert alert-danger">{error}</div>}
-            <form onSubmit={handleLogin}>
-              <div className="mb-3">
-                <label>Email</label>
-                <input type="email" className="form-control" value={email} onChange={e => setEmail(e.target.value)} required />
-              </div>
-              <div className="mb-3">
-                <label>Password</label>
-                <input type="password" className="form-control" value={password} onChange={e => setPassword(e.target.value)} required />
-              </div>
-              <button type="submit" className="btn btn-primary w-100">Login</button>
-              <p className="text-center mt-3">
-                Don't have an account? <a href="/register">Register here</a>
-              </p>
-            </form>
+    <div className="login-page">
+      <div className="login-card">
+        <div style={{ textAlign: 'center', marginBottom: '2rem' }}>
+          <div style={{ width: '52px', height: '52px', background: '#fff0e6', borderRadius: '14px', margin: '0 auto 12px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+            <i className="ti ti-pencil" style={{ color: '#c05621', fontSize: '24px' }} aria-hidden="true"></i>
           </div>
+          <h4 style={{ fontSize: '20px', fontWeight: '600', color: '#7c3a00' }}>CMS Blog</h4>
+          <p style={{ fontSize: '13px', color: '#b06030', marginTop: '4px' }}>Sign in to your account</p>
         </div>
+        {error && <div className="alert alert-danger" style={{ fontSize: '13px' }}>{error}</div>}
+        <form onSubmit={handleLogin}>
+          <label className="form-label-custom">Email</label>
+          <input type="email" className="form-control-custom" placeholder="admin@gmail.com" value={email}
+            onChange={e => setEmail(e.target.value)} required />
+          <label className="form-label-custom">Password</label>
+          <input type="password" className="form-control-custom" placeholder="••••••••" value={password}
+            onChange={e => setPassword(e.target.value)} required />
+          <button type="submit" className="btn-primary-custom" style={{ width: '100%', padding: '10px', marginTop: '8px' }}>
+            Login
+          </button>
+          <p style={{ textAlign: 'center', marginTop: '1rem', fontSize: '13px', color: '#b06030' }}>
+            Don't have an account? <a href="/register" style={{ color: '#c05621', fontWeight: '500' }}>Register here</a>
+          </p>
+        </form>
       </div>
     </div>
   );
