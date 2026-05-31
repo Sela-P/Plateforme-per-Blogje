@@ -49,8 +49,6 @@ function App() {
           <Route path="/roles" element={<PrivateRoute><Roles /></PrivateRoute>} />
           <Route path="/subscriptions" element={<PrivateRoute><Subscriptions /></PrivateRoute>} />
           <Route path="/blog" element={<Home />} />
-          function Home() {
-export default Home;
         </Routes>
       </Layout>
     </BrowserRouter>
