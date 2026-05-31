@@ -47,26 +47,26 @@ navigate('/blog');
       </nav>
 
       <div style={{ maxWidth: '800px', margin: '32px auto', padding: '0 16px' }}>
-        <h2 style={{ color: '#7c3a00', marginBottom: '24px' }}>Krijo Post të Ri</h2>
+        <h2 style={{ color: '#7c3a00', marginBottom: '24px' }}>Create a New Post</h2>
         {error && <div style={{ color: 'red', marginBottom: '16px' }}>{error}</div>}
         <form onSubmit={handleSubmit}>
           <div style={{ marginBottom: '16px' }}>
-            <label style={{ display: 'block', marginBottom: '6px', fontWeight: '500' }}>Titulli</label>
+            <label style={{ display: 'block', marginBottom: '6px', fontWeight: '500' }}>Title</label>
             <input type="text" value={titulli} onChange={e => setTitulli(e.target.value)} required
               style={{ width: '100%', padding: '10px', borderRadius: '8px', border: '1px solid #ddd', fontSize: '14px' }} />
           </div>
           <div style={{ marginBottom: '16px' }}>
-            <label style={{ display: 'block', marginBottom: '6px', fontWeight: '500' }}>Përmbajtja</label>
+            <label style={{ display: 'block', marginBottom: '6px', fontWeight: '500' }}>Contents</label>
             <textarea value={permbajtja} onChange={e => setPermbajtja(e.target.value)} required rows={10}
               style={{ width: '100%', padding: '10px', borderRadius: '8px', border: '1px solid #ddd', fontSize: '14px' }} />
           </div>
           <div style={{ marginBottom: '16px' }}>
-            <label style={{ display: 'block', marginBottom: '6px', fontWeight: '500' }}>Foto/Video (opsionale)</label>
+            <label style={{ display: 'block', marginBottom: '6px', fontWeight: '500' }}>Photo/Video (optional)</label>
             <input type="file" accept="image/*,video/*" onChange={e => setFile(e.target.files[0])}
               style={{ fontSize: '14px' }} />
           </div>
           <button type="submit" style={{ background: '#7c3a00', color: 'white', border: 'none', padding: '10px 24px', borderRadius: '8px', cursor: 'pointer', fontSize: '14px' }}>
-            Publiko
+            Publish
           </button>
         </form>
       </div>

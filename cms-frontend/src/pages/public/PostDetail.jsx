@@ -78,7 +78,7 @@ function PostDetail() {
         {/* Forma e komentit */}
         <form onSubmit={handleComment} style={{ marginTop: '24px' }}>
           <textarea value={permbajtja} onChange={e => setPermbajtja(e.target.value)} required
-            placeholder="Shkruaj një koment..." rows={3}
+            placeholder="Write a comment..." rows={3}
             style={{ width: '100%', padding: '10px', borderRadius: '8px', border: '1px solid #ddd', fontSize: '14px' }} />
           <button type="submit" style={{ background: '#7c3a00', color: 'white', border: 'none', padding: '8px 20px', borderRadius: '8px', cursor: 'pointer', marginTop: '8px' }}>
             Comment
