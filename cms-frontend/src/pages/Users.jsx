@@ -23,9 +23,9 @@ function Users() {
     if (editing) {
       await API.put(`/users/${editing}`, form);
       setEditing(null);
+      setForm({ emri: '', email: '', password: '' });
+      fetchUsers();
     }
-    setForm({ emri: '', email: '', password: '' });
-    fetchUsers();
   };
 
   const handleEdit = (u) => {
@@ -34,59 +34,74 @@ function Users() {
   };
 
   const handleDelete = async (id) => {
-    if (window.confirm('Je i sigurt?')) {
+    if (window.confirm('Are you sure?')) {
       await API.delete(`/users/${id}`);
       fetchUsers();
     }
   };
 
   return (
-    <div className="container mt-4">
-      <h3>Menaxhimi i Përdoruesve</h3>
-      {editing && (
-        <form onSubmit={handleSubmit} className="card p-3 mb-4">
-          <div className="mb-2">
-            <input className="form-control" placeholder="Emri" value={form.emri}
-              onChange={e => setForm({ ...form, emri: e.target.value })} required />
+    <div className="main-content">
+      <div className="topbar">
+        <p style={{ fontWeight: '600', fontSize: '15px', color: '#7c3a00' }}>Users</p>
+        <div className="avatar-circle">A</div>
+      </div>
+      <div className="page-content">
+        {editing && (
+          <div className="content-card">
+            <div className="card-title">Edit User</div>
+            <form onSubmit={handleSubmit}>
+              <label className="form-label-custom">Name</label>
+              <input className="form-control-custom" placeholder="Name..." value={form.emri}
+                onChange={e => setForm({ ...form, emri: e.target.value })} required />
+              <label className="form-label-custom">Email</label>
+              <input className="form-control-custom" placeholder="Email..." value={form.email}
+                onChange={e => setForm({ ...form, email: e.target.value })} required />
+              <label className="form-label-custom">New Password (optional)</label>
+              <input className="form-control-custom" placeholder="Leave blank to keep current..." type="password" value={form.password}
+                onChange={e => setForm({ ...form, password: e.target.value })} />
+              <div style={{ display: 'flex', gap: '8px' }}>
+                <button type="submit" className="btn-primary-custom">Update User</button>
+                <button type="button" className="btn-edit-custom" onClick={() => setEditing(null)}>Cancel</button>
+              </div>
+            </form>
           </div>
-          <div className="mb-2">
-            <input className="form-control" placeholder="Email" value={form.email}
-              onChange={e => setForm({ ...form, email: e.target.value })} required />
-          </div>
-          <div className="mb-2">
-            <input className="form-control" placeholder="Fjalëkalim i ri (opsional)" type="password" value={form.password}
-              onChange={e => setForm({ ...form, password: e.target.value })} />
-          </div>
-          <button className="btn btn-primary">Ndrysho</button>
-          <button className="btn btn-secondary ms-2" onClick={() => setEditing(null)}>Anulo</button>
-        </form>
-      )}
+        )}
 
-      <table className="table table-bordered">
-        <thead>
-          <tr>
-            <th>ID</th>
-            <th>Emri</th>
-            <th>Email</th>
-            <th>Data</th>
-            <th>Veprime</th>
-          </tr>
-        </thead>
-        <tbody>
-          {users.map(u => (
-            <tr key={u.id}>
-              <td>{u.id}</td>
-              <td>{u.emri}</td>
-              <td>{u.email}</td>
-              <td>{new Date(u.created_at).toLocaleDateString()}</td>
-              <td>
-                <button className="btn btn-warning btn-sm me-2" onClick={() => handleEdit(u)}>Ndrysho</button>
-                <button className="btn btn-danger btn-sm" onClick={() => handleDelete(u.id)}>Fshi</button>
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
+        <div className="content-card">
+          <div className="card-title">All Users ({users.length})</div>
+          <table className="table-clean">
+            <thead>
+              <tr>
+                <th>User</th>
+                <th>Email</th>
+                <th>Joined</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              {users.map(u => (
+                <tr key={u.id}>
+                  <td>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                      <div className="avatar-circle" style={{ width: '28px', height: '28px', fontSize: '11px' }}>
+                        {u.emri?.charAt(0).toUpperCase()}
+                      </div>
+                      {u.emri}
+                    </div>
+                  </td>
+                  <td style={{ color: '#b06030' }}>{u.email}</td>
+                  <td style={{ color: '#b06030' }}>{new Date(u.created_at).toLocaleDateString()}</td>
+                  <td>
+                    <button className="btn-edit-custom" onClick={() => handleEdit(u)}>Edit</button>
+                    <button className="btn-delete-custom" onClick={() => handleDelete(u.id)}>Delete</button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </div>
     </div>
   );
 }
