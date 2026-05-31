@@ -9,15 +9,21 @@ function Login() {
   const navigate = useNavigate();
 
   const handleLogin = async (e) => {
-    e.preventDefault();
-    try {
-      const res = await axios.post('http://localhost:5000/api/auth/login', { email, password });
-      localStorage.setItem('token', res.data.token);
-      localStorage.setItem('user', JSON.stringify(res.data.user));
+  e.preventDefault();
+  try {
+    const res = await axios.post('http://localhost:5000/api/auth/login', { email, password });
+    localStorage.setItem('token', res.data.token);
+    localStorage.setItem('user', JSON.stringify(res.data.user));
+
+    const role = res.data.user.role;
+    if (role === 'admin' || role === 'editor') {
       navigate('/dashboard');
-    } catch (err) {
-      setError('Invalid email or password');
+    } else {
+      navigate('/blog');
     }
+    } catch (err) {
+    setError('Invalid email or password');
+   }
   };
 
   return (
