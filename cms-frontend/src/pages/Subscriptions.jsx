@@ -43,61 +43,94 @@ function Subscriptions() {
   };
 
   const handleDelete = async (id) => {
-    if (window.confirm('Je i sigurt?')) {
+    if (window.confirm('Are you sure?')) {
       await API.delete(`/subscriptions/plans/${id}`);
       fetchPlans();
     }
   };
 
   return (
-    <div className="container mt-4">
-      <h3>Planet e Abonimit</h3>
-      <form onSubmit={handleSubmit} className="card p-3 mb-4">
-        <div className="mb-2">
-          <input className="form-control" placeholder="Emërtimi" value={form.emertimi}
-            onChange={e => setForm({ ...form, emertimi: e.target.value })} required />
+    <div className="main-content">
+      <div className="topbar">
+        <p style={{ fontWeight: '600', fontSize: '15px', color: '#7c3a00' }}>Subscriptions</p>
+        <div className="avatar-circle">A</div>
+      </div>
+      <div className="page-content">
+        <div className="content-card">
+          <div className="card-title">{editing ? 'Edit Plan' : 'Add New Plan'}</div>
+          <form onSubmit={handleSubmit}>
+            <label className="form-label-custom">Plan Name</label>
+            <input className="form-control-custom" placeholder="e.g. Basic, Premium" value={form.emertimi}
+              onChange={e => setForm({ ...form, emertimi: e.target.value })} required />
+            <label className="form-label-custom">Price (€)</label>
+            <input className="form-control-custom" placeholder="9.99" type="number" value={form.cmimi}
+              onChange={e => setForm({ ...form, cmimi: e.target.value })} required />
+            <label className="form-label-custom">Duration (days)</label>
+            <input className="form-control-custom" placeholder="30" type="number" value={form.kohezgjatja_dite}
+              onChange={e => setForm({ ...form, kohezgjatja_dite: e.target.value })} required />
+            <label className="form-label-custom">Description</label>
+            <input className="form-control-custom" placeholder="Plan description..." value={form.pershkrimi}
+              onChange={e => setForm({ ...form, pershkrimi: e.target.value })} />
+            <div style={{ display: 'flex', gap: '8px' }}>
+              <button type="submit" className="btn-primary-custom">{editing ? 'Update Plan' : 'Add Plan'}</button>
+              {editing && <button type="button" className="btn-edit-custom" onClick={() => setEditing(null)}>Cancel</button>}
+            </div>
+          </form>
         </div>
-        <div className="mb-2">
-          <input className="form-control" placeholder="Çmimi" type="number" value={form.cmimi}
-            onChange={e => setForm({ ...form, cmimi: e.target.value })} required />
-        </div>
-        <div className="mb-2">
-          <input className="form-control" placeholder="Kohëzgjatja (ditë)" type="number" value={form.kohezgjatja_dite}
-            onChange={e => setForm({ ...form, kohezgjatja_dite: e.target.value })} required />
-        </div>
-        <div className="mb-2">
-          <input className="form-control" placeholder="Përshkrimi" value={form.pershkrimi}
-            onChange={e => setForm({ ...form, pershkrimi: e.target.value })} />
-        </div>
-        <button className="btn btn-primary">{editing ? 'Ndrysho' : 'Shto Plan'}</button>
-        {editing && <button className="btn btn-secondary ms-2" onClick={() => setEditing(null)}>Anulo</button>}
-      </form>
 
-      <table className="table table-bordered">
-        <thead>
-          <tr>
-            <th>ID</th>
-            <th>Emërtimi</th>
-            <th>Çmimi</th>
-            <th>Ditë</th>
-            <th>Veprime</th>
-          </tr>
-        </thead>
-        <tbody>
-          {plans.map(p => (
-            <tr key={p.id}>
-              <td>{p.id}</td>
-              <td>{p.emertimi}</td>
-              <td>{p.cmimi}€</td>
-              <td>{p.kohezgjatja_dite}</td>
-              <td>
-                <button className="btn btn-warning btn-sm me-2" onClick={() => handleEdit(p)}>Ndrysho</button>
-                <button className="btn btn-danger btn-sm" onClick={() => handleDelete(p.id)}>Fshi</button>
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
+        <div className="content-card">
+          <div className="card-title">All Plans ({plans.length})</div>
+          <table className="table-clean">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Price</th>
+                <th>Duration</th>
+                <th>Status</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              {plans.map(p => (
+                <tr key={p.id}>
+                  <td style={{ fontWeight: '500' }}>{p.emertimi}</td>
+                  <td style={{ color: '#7c3a00', fontWeight: '600' }}>{p.cmimi}€</td>
+                  <td style={{ color: '#b06030' }}>{p.kohezgjatja_dite} days</td>
+                  <td><span className={`badge-${p.statusi === 'active' ? 'published' : 'archived'}`}>{p.statusi}</span></td>
+                  <td>
+                    <button className="btn-edit-custom" onClick={() => handleEdit(p)}>Edit</button>
+                    <button className="btn-delete-custom" onClick={() => handleDelete(p.id)}>Delete</button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+
+        <div className="content-card">
+          <div className="card-title">Active Subscriptions ({subscriptions.length})</div>
+          <table className="table-clean">
+            <thead>
+              <tr>
+                <th>Plan</th>
+                <th>Start Date</th>
+                <th>End Date</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              {subscriptions.map(s => (
+                <tr key={s.id}>
+                  <td>{s.plani}</td>
+                  <td style={{ color: '#b06030' }}>{new Date(s.data_fillimit).toLocaleDateString()}</td>
+                  <td style={{ color: '#b06030' }}>{new Date(s.data_mbarimit).toLocaleDateString()}</td>
+                  <td><span className={`badge-${s.statusi === 'active' ? 'published' : 'archived'}`}>{s.statusi}</span></td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </div>
     </div>
   );
 }
