@@ -17,7 +17,7 @@ function PostDetail() {
       headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
     }).then(res => setPost(res.data)).catch(console.error);
 
-    axios.get('http://localhost:5000/api/posttags/${id}`, {
+    axios.get(`http://localhost:5000/api/posttags/${id}`, {
     headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
   })
   (res => {
