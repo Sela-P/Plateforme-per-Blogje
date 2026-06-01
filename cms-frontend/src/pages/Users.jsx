@@ -40,6 +40,11 @@ function Users() {
     }
   };
 
+  const handleToggleStatus = async (id, currentStatus) => {
+    await API.put(`/users/${id}/status`);
+    fetchUsers();
+  };
+
   return (
     <div className="main-content">
       <div className="topbar">
@@ -75,6 +80,7 @@ function Users() {
               <tr>
                 <th>User</th>
                 <th>Email</th>
+                <th>Status</th>
                 <th>Joined</th>
                 <th>Actions</th>
               </tr>
@@ -91,10 +97,24 @@ function Users() {
                     </div>
                   </td>
                   <td style={{ color: '#b06030' }}>{u.email}</td>
+                  <td>
+                    <span style={{ 
+                      background: u.statusi === 'active' ? '#d4edda' : '#f8d7da',
+                      color: u.statusi === 'active' ? '#155724' : '#721c24',
+                      padding: '3px 10px', borderRadius: '20px', fontSize: '12px'
+                    }}>
+                      {u.statusi || 'active'}
+                    </span>
+                  </td>
                   <td style={{ color: '#b06030' }}>{new Date(u.created_at).toLocaleDateString()}</td>
                   <td>
                     <button className="btn-edit-custom" onClick={() => handleEdit(u)}>Edit</button>
                     <button className="btn-delete-custom" onClick={() => handleDelete(u.id)}>Delete</button>
+                    <button 
+                      className={u.statusi === 'active' ? 'btn-delete-custom' : 'btn-edit-custom'}
+                      onClick={() => handleToggleStatus(u.id, u.statusi)}>
+                      {u.statusi === 'active' ? 'Deactivate' : 'Activate'}
+                    </button>
                   </td>
                 </tr>
               ))}

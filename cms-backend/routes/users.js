@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const verifyToken = require('../middleware/authMiddleware');
-const { getUsers, getUser, updateUser, deleteUser, uploadProfilePhoto, removeProfilePhoto } = require('../controllers/userController');
+const { getUsers, getUser, updateUser, deleteUser, uploadProfilePhoto, removeProfilePhoto, toggleUserStatus  } = require('../controllers/userController');
 
 router.get('/', verifyToken, getUsers);
 router.get('/:id', verifyToken, getUser);
@@ -13,7 +13,7 @@ router.post('/:id/photo', verifyToken, (req, res, next) => {
     next();
   });
 }, uploadProfilePhoto);
-
 router.delete('/:id/photo', verifyToken, removeProfilePhoto);
+router.put('/:id/status', verifyToken, toggleUserStatus);
 
 module.exports = router;

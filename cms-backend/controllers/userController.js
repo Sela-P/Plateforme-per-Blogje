@@ -3,7 +3,7 @@ const bcrypt = require('bcryptjs');
 
 const getUsers = async (req, res) => {
   try {
-    const [rows] = await db.query('SELECT id, emri, email, created_at FROM Users');
+    const [rows] = await db.query('SELECT id, emri, email, created_at, statusi FROM Users');
     res.json(rows);
   } catch (err) {
     res.status(500).json({ error: err.message });
@@ -67,4 +67,16 @@ const removeProfilePhoto = async (req, res) => {
   }
 };
 
-module.exports = { getUsers, getUser, updateUser, deleteUser, uploadProfilePhoto, removeProfilePhoto };
+const toggleUserStatus = async (req, res) => {
+  try {
+    const [rows] = await db.query('SELECT statusi FROM Users WHERE id=?', [req.params.id]);
+    if (rows.length === 0) return res.status(404).json({ message: 'Not found' });
+    const newStatus = rows[0].statusi === 'active' ? 'inactive' : 'active';
+    await db.query('UPDATE Users SET statusi=? WHERE id=?', [newStatus, req.params.id]);
+    res.json({ message: 'Status updated', statusi: newStatus });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
+
+module.exports = { getUsers, getUser, updateUser, deleteUser, uploadProfilePhoto, removeProfilePhoto, toggleUserStatus  };
