@@ -55,3 +55,50 @@ const deletePost = async (req, res) => {
 };
 
 module.exports = { getPosts, getPost, createPost, updatePost, deletePost };
+
+const searchPosts = async (req, res) => {
+  const { q } = req.query;
+  try {
+    const [rows] = await db.query(
+      'SELECT * FROM Posts WHERE statusi = "published" AND (titulli LIKE ? OR permbajtja LIKE ?)',
+      [`%${q}%`, `%${q}%`]
+    );
+    res.json(rows);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
+
+module.exports = { getPosts, getPost, createPost, updatePost, deletePost, searchPosts };
+
+const getPostsByCategory = async (req, res) => {
+  try {
+    const [rows] = await db.query(
+      'SELECT Posts.*, Categories.emertimi as category_name FROM Posts JOIN Categories ON Posts.category_id = Categories.id WHERE Posts.statusi = "published" AND Posts.category_id = ?',
+      [req.params.id]
+    );
+    res.json(rows);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
+
+module.exports = { getPosts, getPost, createPost, updatePost, deletePost, searchPosts, getPostsByCategory };
+
+const getPostsByTag = async (req, res) => {
+  try {
+    const [rows] = await db.query(
+      `SELECT Posts.*, Tags.emertimi as tag_name 
+       FROM Posts 
+       JOIN PostTags ON Posts.id = PostTags.post_id 
+       JOIN Tags ON PostTags.tag_id = Tags.id 
+       WHERE Posts.statusi = "published" AND Tags.id = ?`,
+      [req.params.id]
+    );
+    res.json(rows);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
+
+module.exports = { getPosts, getPost, createPost, updatePost, deletePost, searchPosts, getPostsByCategory, getPostsByTag };
