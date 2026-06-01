@@ -66,11 +66,13 @@ const deletePost = async (req, res) => {
 
 const searchPosts = async (req, res) => {
   const { q } = req.query;
+  console.log('Search query:', q);
   try {
     const [rows] = await db.query(
       'SELECT * FROM Posts WHERE statusi = "published" AND (titulli LIKE ? OR permbajtja LIKE ?)',
       [`%${q}%`, `%${q}%`]
     );
+    console.log('Results:', rows.length);
     res.json(rows);
   } catch (err) {
     res.status(500).json({ error: err.message });

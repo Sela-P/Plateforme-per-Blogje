@@ -6,6 +6,7 @@ function Home() {
   const [posts, setPosts] = useState([]);
   const [searchQuery, setSearchQuery] = useState('');
   const [filteredPosts, setFilteredPosts] = useState([]);
+  const [hasSearched, setHasSearched] = useState(false);  
   const [categories, setCategories] = useState([]);
 
   const navigate = useNavigate();
@@ -51,15 +52,15 @@ function Home() {
       );
 
       setFilteredPosts(res.data);
+      setHasSearched(true);
     } catch (err) {
       console.error(err);
     }
   };
 
-  const displayPosts =
-    filteredPosts.length > 0 || searchQuery
-      ? filteredPosts
-      : posts.filter(p => p.statusi === 'published');
+  const displayPosts = hasSearched
+  ? filteredPosts
+  : posts.filter(p => p.statusi === 'published');
 
   const handleLogout = () => {
     localStorage.removeItem('token');
@@ -99,7 +100,10 @@ function Home() {
               value={searchQuery}
               onChange={(e) => {
                 setSearchQuery(e.target.value);
-                if (!e.target.value) setFilteredPosts([]);
+                if (!e.target.value) {
+                  setFilteredPosts([]);
+                  setHasSearched(false);
+                }
               }}
               style={{
                 padding: '6px 12px',
