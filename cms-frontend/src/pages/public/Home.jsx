@@ -67,6 +67,19 @@ function Home() {
     navigate('/login');
   };
 
+  const handleNewsletter = async (e) => {
+  e.preventDefault();
+  try {
+    await axios.post('http://localhost:5000/api/newsletter', { email: newsletterEmail });
+    setNewsletterMsg('Subscribed successfully!');
+    setNewsletterEmail('');
+  } catch (err) {
+    setNewsletterMsg('Already subscribed or error!');
+  }
+  };
+
+  
+
   return (
     <div>
       <nav style={{ background: '#7c3a00', padding: '12px 24px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
@@ -166,6 +179,23 @@ function Home() {
           ))
         )}
       </div>
+
+      {/* Newsletter */}
+      <div style={{ maxWidth: '800px', margin: '32px auto', padding: '24px', background: '#fff0e6', borderRadius: '10px', textAlign: 'center' }}>
+        <h3 style={{ color: '#7c3a00', marginBottom: '8px' }}>Subscribe to Newsletter</h3>
+        <p style={{ color: '#b06030', fontSize: '14px', marginBottom: '16px' }}>Get notified when new posts are published!</p>
+        {newsletterMsg && <p style={{ color: 'green', marginBottom: '8px' }}>{newsletterMsg}</p>}
+        <form onSubmit={handleNewsletter} style={{ display: 'flex', gap: '8px', justifyContent: 'center' }}>
+          <input type="email" value={newsletterEmail} onChange={e => setNewsletterEmail(e.target.value)}
+            placeholder="Enter your email..." required
+            style={{ padding: '8px 16px', borderRadius: '8px', border: '1px solid #ddd', fontSize: '14px', width: '260px' }} />
+          <button type="submit"
+            style={{ background: '#7c3a00', color: 'white', border: 'none', padding: '8px 20px', borderRadius: '8px', cursor: 'pointer' }}>
+            Subscribe
+          </button>
+        </form>
+      </div>
+
     </div>
   );
 }
