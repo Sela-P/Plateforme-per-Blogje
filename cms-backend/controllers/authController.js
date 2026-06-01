@@ -41,6 +41,9 @@ const login = async (req, res) => {
 
     const user = users[0];
     const isMatch = await bcrypt.compare(password, user.password);
+    if (user.statusi === 'inactive') {
+      return res.status(403).json({ message: 'Account is deactivated' });
+    }
     if (!isMatch) {
       return res.status(400).json({ message: 'Wrong email or password' });
     }
@@ -58,10 +61,45 @@ const login = async (req, res) => {
       { expiresIn: '24h' }
     );
 
-    res.json({ token, user: { id: user.id, emri: user.emri, email: user.email, role } });
+    const refreshTokenValue = jwt.sign(
+      { id: user.id, email: user.email, role },
+      process.env.JWT_SECRET,
+      { expiresIn: '7d' }
+    );
+    const expiresAt = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000);
+    await db.query(
+      'INSERT INTO RefreshTokens (user_id, token, expires_at) VALUES (?,?,?)',
+      [user.id, refreshTokenValue, expiresAt]
+    );
+
+    res.json({ token, refreshToken: refreshTokenValue, user: { id: user.id, emri: user.emri, email: user.email, role } });
   } catch (err) {
     res.status(500).json({ message: 'Server Error', error: err.message });
   }
 };
 
-module.exports = { register, login };
+const refreshToken = async (req, res) => {
+  const { token } = req.body;
+  if (!token) return res.status(401).json({ message: 'No token' });
+
+  try {
+    const [rows] = await db.query(
+      'SELECT * FROM RefreshTokens WHERE token=? AND expires_at > NOW()',
+      [token]
+    );
+    if (rows.length === 0) return res.status(403).json({ message: 'Invalid or expired token' });
+
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    const newToken = jwt.sign(
+      { id: decoded.id, email: decoded.email, role: decoded.role },
+      process.env.JWT_SECRET,
+      { expiresIn: '24h' }
+    );
+
+    res.json({ token: newToken });
+  } catch (err) {
+    res.status(403).json({ message: 'Invalid token' });
+  }
+};
+
+module.exports = { register, login, refreshToken };

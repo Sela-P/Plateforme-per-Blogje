@@ -13,6 +13,9 @@ function Login() {
   try {
     const res = await axios.post('http://localhost:5000/api/auth/login', { email, password });
     localStorage.setItem('token', res.data.token);
+    if (res.data.refreshToken) {
+      localStorage.setItem('refreshToken', res.data.refreshToken);
+    }
     localStorage.setItem('user', JSON.stringify(res.data.user));
 
     const role = res.data.user.role;
@@ -22,7 +25,11 @@ function Login() {
       navigate('/blog');
     }
     } catch (err) {
-    setError('Invalid email or password');
+    if (err.response?.status === 403) {
+      setError('Your account has been deactivated!');
+    } else {
+      setError('Invalid email or password');
+    }
    }
   };
 
