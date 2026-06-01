@@ -4,9 +4,13 @@ import { useNavigate } from 'react-router-dom';
 
 function Home() {
   const [posts, setPosts] = useState([]);
+  const [searchQuery, setSearchQuery] = useState('');
+  const [filteredPosts, setFilteredPosts] = useState([]);
+  const [categories, setCategories] = useState([]);
+
   const navigate = useNavigate();
   const user = JSON.parse(localStorage.getItem('user') || '{}');
-
+  
   useEffect(() => {
     axios.get('http://localhost:5000/api/posts', {
       headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
@@ -14,7 +18,46 @@ function Home() {
       console.log(res.data);
       setPosts(res.data);
     }).catch(console.error);
+    axios.get('http://localhost:5000/api/categories', {
+    headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
+  })
+    .then(res => {
+      setCategories(res.data);
+    })
+    .catch(console.error);
+
   }, []);
+
+
+
+  const handleSearch = async (e) => {
+    e.preventDefault();
+
+    if (!searchQuery.trim()) {
+      setFilteredPosts([]);
+      return;
+    }
+
+    try {
+      const res = await axios.get(
+        `http://localhost:5000/api/posts/search?q=${searchQuery}`,
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem('token')}`
+          }
+        }
+      );
+
+      setFilteredPosts(res.data);
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  const displayPosts =
+    filteredPosts.length > 0 || searchQuery
+      ? filteredPosts
+      : posts.filter(p => p.statusi === 'published');
 
   const handleLogout = () => {
     localStorage.removeItem('token');
@@ -31,10 +74,53 @@ function Home() {
             Profile
           </button>
           <button onClick={() => navigate('/blog/create')} style={{ background: 'white', color: '#7c3a00', border: 'none', padding: '6px 14px', borderRadius: '6px', cursor: 'pointer' }}>
+            
             + Create Post
           </button>
-          <button onClick={handleLogout} style={{ background: 'transparent', color: 'white', border: '1px solid white', padding: '6px 14px', borderRadius: '6px', cursor: 'pointer' }}>
-            Log out
+          <form onSubmit={handleSearch} style={{ display: 'flex', gap: '8px' }}>
+            <input
+              type="text"
+              placeholder="Search posts..."
+              value={searchQuery}
+              onChange={(e) => {
+                setSearchQuery(e.target.value);
+                if (!e.target.value) setFilteredPosts([]);
+              }}
+              style={{
+                padding: '6px 12px',
+                borderRadius: '6px',
+                border: 'none',
+                fontSize: '14px'
+              }}
+            />
+
+            <button
+              type="submit"
+              style={{
+                background: 'white',
+                color: '#7c3a00',
+                border: 'none',
+                padding: '6px 12px',
+                borderRadius: '6px',
+                cursor: 'pointer'
+              }}
+            >
+              🔍
+            </button>
+          </form>
+
+          <button
+            onClick={handleLogout}
+            style={{
+              background: 'transparent',
+              color: 'white',
+              border: '1px solid white',
+              padding: '6px 14px',
+              borderRadius: '6px',
+              cursor: 'pointer'
+            }}
+          >
+          Log out
           </button>
         </div>
       </nav>
@@ -52,6 +138,26 @@ function Home() {
                   style={{ width: '100%', maxHeight: '200px', objectFit: 'cover', borderRadius: '8px', marginBottom: '10px' }}
                   alt={post.titulli} />
               )}
+              {post.category_id && (
+                <span
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    navigate(`/blog/category/${post.category_id}`);
+                  }}
+                  style={{
+                    background: '#fff0e6',
+                    color: '#7c3a00',
+                    padding: '3px 10px',
+                    borderRadius: '20px',
+                    fontSize: '12px',
+                    cursor: 'pointer',
+                    marginBottom: '8px',
+                    display: 'inline-block'
+                  }}
+                >
+                  {categories.find(c => c.id === post.category_id)?.emertimi || 'Category'}
+                </span>
+              )}
               <h3 style={{ color: '#7c3a00', margin: '0 0 8px' }}>{post.titulli}</h3>
               <p style={{ color: '#666', fontSize: '14px' }}>{post.permbajtja?.substring(0, 150)}...</p>
             </div>
@@ -63,3 +169,4 @@ function Home() {
 }
 
 export default Home;
+
