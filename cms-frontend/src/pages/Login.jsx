@@ -39,7 +39,7 @@ function Login() {
         {error && <div className="alert alert-danger" style={{ fontSize: '13px' }}>{error}</div>}
         <form onSubmit={handleLogin}>
           <label className="form-label-custom">Email</label>
-          <input type="email" className="form-control-custom" placeholder="admin@gmail.com" value={email}
+          <input type="email" className="form-control-custom" placeholder="email@example.com" value={email}
             onChange={e => setEmail(e.target.value)} required />
           <label className="form-label-custom">Password</label>
           <input type="password" className="form-control-custom" placeholder="••••••••" value={password}

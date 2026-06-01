@@ -10,6 +10,8 @@ function Profile() {
   const [msg, setMsg] = useState('');
   const navigate = useNavigate();
   const user = JSON.parse(localStorage.getItem('user') || '{}');
+  const [fotoProfile, setFotoProfile] = useState(user.foto_profili || '');
+  const [photoFile, setPhotoFile] = useState(null);
 
   useEffect(() => {
     setEmri(user.emri || '');
@@ -38,6 +40,38 @@ function Profile() {
     }
   };
 
+ const handlePhotoUpload = async () => {
+  if (!photoFile) return;
+  const formData = new FormData();
+  formData.append('file', photoFile);
+  try {
+    const res = await axios.post(`http://localhost:5000/api/users/${user.id}/photo`, formData, {
+      headers: { 
+        Authorization: `Bearer ${localStorage.getItem('token')}`,
+        'Content-Type': 'multipart/form-data'
+      }
+    });
+    setFotoProfile(res.data.foto_profili);
+    localStorage.setItem('user', JSON.stringify({ ...user, foto_profili: res.data.foto_profili }));
+    setMsg('Profile photo updated!');
+  } catch (err) {
+    setMsg('Error uploading photo!');
+  }
+};
+
+const handlePhotoRemove = async () => {
+  try {
+    await axios.delete(`http://localhost:5000/api/users/${user.id}/photo`, {
+      headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
+    });
+    setFotoProfile('');
+    localStorage.setItem('user', JSON.stringify({ ...user, foto_profili: '' }));
+    setMsg('Profile photo removed!');
+  } catch (err) {
+    setMsg('Error removing photo!');
+  }
+};
+
   return (
     <div>
       <nav style={{ background: '#7c3a00', padding: '12px 24px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
@@ -49,6 +83,29 @@ function Profile() {
         {/* Informacionet */}
         <h2 style={{ color: '#7c3a00' }}>Profili Im</h2>
         {msg && <p style={{ color: 'green' }}>{msg}</p>}
+
+        {/* Foto Profili */}
+        <div style={{ background: 'white', border: '1px solid #eee', borderRadius: '10px', padding: '20px', marginBottom: '24px', textAlign: 'center' }}>
+        <div style={{ width: '100px', height: '100px', borderRadius: '50%', background: '#f0e6d3', margin: '0 auto 16px', overflow: 'hidden', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+            {fotoProfile ? (
+            <img src={`http://localhost:5000${fotoProfile}`} style={{ width: '100%', height: '100%', objectFit: 'cover' }} alt="Profile" />
+            ) : (
+            <span style={{ fontSize: '40px' }}>👤</span>
+            )}
+        </div>
+        <input type="file" accept="image/*" onChange={e => setPhotoFile(e.target.files[0])} style={{ marginBottom: '10px' }} />
+        <div style={{ display: 'flex', gap: '10px', justifyContent: 'center' }}>
+            <button onClick={handlePhotoUpload} style={{ background: '#7c3a00', color: 'white', border: 'none', padding: '8px 16px', borderRadius: '8px', cursor: 'pointer' }}>
+            Upload Photo
+            </button>
+            {fotoProfile && (
+            <button onClick={handlePhotoRemove} style={{ background: '#dc3545', color: 'white', border: 'none', padding: '8px 16px', borderRadius: '8px', cursor: 'pointer' }}>
+                Remove Photo
+            </button>
+            )}
+        </div>
+</div>
+
         <form onSubmit={handleUpdate} style={{ background: 'white', border: '1px solid #eee', borderRadius: '10px', padding: '20px', marginBottom: '32px' }}>
           <div style={{ marginBottom: '16px' }}>
             <label style={{ display: 'block', marginBottom: '6px', fontWeight: '500' }}>Name</label>
