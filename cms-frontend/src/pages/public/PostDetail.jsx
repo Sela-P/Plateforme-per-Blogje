@@ -49,6 +49,19 @@ function PostDetail() {
     }
   };
 
+  const handleDeleteComment = async (commentId) => {
+    if (window.confirm('Delete this comment?')) {
+        try {
+        await axios.delete(`http://localhost:5000/api/comments/${commentId}`, {
+            headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
+        });
+        loadComments();
+        } catch (err) {
+        console.error(err);
+        }
+    }
+    };
+    
   if (!post) return <p style={{ textAlign: 'center', marginTop: '40px' }}>Loading...</p>;
 
   return (
@@ -107,8 +120,16 @@ function PostDetail() {
         ) : (
           comments.map(c => (
             <div key={c.id} style={{ background: '#f9f9f9', borderRadius: '8px', padding: '12px', marginBottom: '10px' }}>
-              <p style={{ margin: '0 0 4px', fontSize: '13px', color: '#999' }}>User #{c.user_id}</p>
-              <p style={{ margin: 0 }}>{c.permbajtja}</p>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+            <p style={{ margin: '0 0 4px', fontSize: '13px', color: '#999' }}>User #{c.user_id}</p>
+            {(c.user_id === user.id || user.role === 'admin') && (
+                <button onClick={() => handleDeleteComment(c.id)}
+                style={{ background: 'transparent', color: '#dc3545', border: 'none', cursor: 'pointer', fontSize: '13px' }}>
+                Delete
+                </button>
+            )}
+            </div>
+            <p style={{ margin: 0 }}>{c.permbajtja}</p>
             </div>
           ))
         )}

@@ -79,7 +79,22 @@ function Home() {
   }
   };
 
-  
+  const handleUnsubscribe = async () => {
+  try {
+    const res = await axios.get('http://localhost:5000/api/newsletter', {
+      headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
+    });
+    const sub = res.data.find(s => s.email === newsletterEmail);
+    if (!sub) { setNewsletterMsg('Email not found!'); return; }
+    await axios.delete(`http://localhost:5000/api/newsletter/${sub.id}`, {
+      headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
+    });
+    setNewsletterMsg('Unsubscribed successfully!');
+    setNewsletterEmail('');
+    } catch (err) {
+    setNewsletterMsg('Error unsubscribing!');
+   }
+  };
 
   return (
     <div>
@@ -196,6 +211,10 @@ function Home() {
           <button type="submit"
             style={{ background: '#7c3a00', color: 'white', border: 'none', padding: '8px 20px', borderRadius: '8px', cursor: 'pointer' }}>
             Subscribe
+          </button>
+          <button type="button" onClick={handleUnsubscribe}
+          style={{ background: 'transparent', color: '#7c3a00', border: '1px solid #7c3a00', padding: '8px 20px', borderRadius: '8px', cursor: 'pointer' }}>
+          Unsubscribe
           </button>
         </form>
       </div>

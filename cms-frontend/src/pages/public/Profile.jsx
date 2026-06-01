@@ -123,7 +123,7 @@ const handlePhotoRemove = async () => {
               style={{ width: '100%', padding: '10px', borderRadius: '8px', border: '1px solid #ddd' }} />
           </div>
           <button type="submit" style={{ background: '#7c3a00', color: 'white', border: 'none', padding: '10px 24px', borderRadius: '8px', cursor: 'pointer' }}>
-            Ruaj Ndryshimet
+            Save changes
           </button>
         </form>
 
