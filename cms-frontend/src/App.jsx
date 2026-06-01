@@ -1,14 +1,17 @@
 import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom';
 import Sidebar from './components/Sidebar';
 import Login from './pages/Login';
-import Dashboard from './pages/Dashboard';
-import Posts from './pages/Posts';
-import Categories from './pages/Categories';
-import Tags from './pages/Tags';
-import Comments from './pages/Comments';
-import Pages from './pages/Pages';
-import Media from './pages/Media';
-import Settings from './pages/Settings';
+import { lazy, Suspense } from 'react';
+
+const Dashboard = lazy(() => import('./pages/Dashboard'));
+const Posts = lazy(() => import('./pages/Posts'));
+const Categories = lazy(() => import('./pages/Categories'));
+const Tags = lazy(() => import('./pages/Tags'));
+const Comments = lazy(() => import('./pages/Comments'));
+const Pages = lazy(() => import('./pages/Pages'));
+const Media = lazy(() => import('./pages/Media'));
+const Settings = lazy(() => import('./pages/Settings'));
+
 import Newsletter from './pages/Newsletter';
 import Users from './pages/Users';
 import Roles from './pages/Roles';
@@ -39,6 +42,7 @@ function App() {
   return (
     <BrowserRouter>
       <Layout>
+        <Suspense fallback={<div>Loading...</div>}></Suspense>
         <Routes>
           <Route path="/" element={<Login />} />
           <Route path="/login" element={<Login />} />
