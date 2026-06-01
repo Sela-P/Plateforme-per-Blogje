@@ -17,10 +17,11 @@ function PostDetail() {
       headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
     }).then(res => setPost(res.data)).catch(console.error);
 
-    axios.get('http://localhost:5000/api/posttags', {
+    axios.get('http://localhost:5000/api/posttags/${id}`, {
     headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
-  }).then(res => {
-    const postTags = res.data.filter(
+  })
+  (res => {
+    const postTags = res.data(
       pt => pt.post_id === parseInt(id)
     );
     setTags(postTags);
