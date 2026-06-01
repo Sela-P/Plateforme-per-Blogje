@@ -22,6 +22,7 @@ import CreatePost from './pages/public/CreatePost';
 import Profile from './pages/public/Profile';
 import PostsByCategory from './pages/public/PostsByCategory';
 import PostsByTag from './pages/public/PostsByTag';
+import EditPost from './pages/public/EditPost';
 
 function Layout({ children }) {
   const location = useLocation();
@@ -60,6 +61,8 @@ function App() {
           <Route path="/blog/profile" element={<PublicRoute><Profile /></PublicRoute>} />
           <Route path="/blog/category/:id" element={<PublicRoute><PostsByCategory /></PublicRoute>} />
           <Route path="/blog/tag/:id" element={<PublicRoute><PostsByTag /></PublicRoute>} />
+          <Route path="/blog/edit/:id" element={<PublicRoute><EditPost /></PublicRoute>} />
+
         </Routes>
       </Layout>
     </BrowserRouter>

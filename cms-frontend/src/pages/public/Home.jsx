@@ -10,6 +10,8 @@ function Home() {
 
   const navigate = useNavigate();
   const user = JSON.parse(localStorage.getItem('user') || '{}');
+  const [newsletterEmail, setNewsletterEmail] = useState('');
+  const [newsletterMsg, setNewsletterMsg] = useState('');
   
   useEffect(() => {
     axios.get('http://localhost:5000/api/posts', {
@@ -127,10 +129,10 @@ function Home() {
       
 
       <div style={{ maxWidth: '800px', margin: '32px auto', padding: '0 16px' }}>
-        {posts.length === 0 ? (
+        {displayPosts.length === 0 ? (
           <p style={{ textAlign: 'center', color: '#888' }}>No posts yet.</p>
         ) : (
-          posts.filter(p => p.statusi === 'published').map(post => (
+          displayPosts.map(post => (
             <div key={post.id} onClick={() => navigate(`/blog/post/${post.id}`)}
               style={{ background: 'white', border: '1px solid #eee', borderRadius: '10px', padding: '20px', marginBottom: '16px', cursor: 'pointer' }}>
               {post.imazhi && (

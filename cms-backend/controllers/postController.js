@@ -23,7 +23,7 @@ const createPost = async (req, res) => {
   const { titulli, permbajtja, category_id, statusi, imazhi } = req.body;
   try {
     const [r] = await db.query(
-      'INSERT INTO Posts (titulli, permbajtja, user_id, category_id, statusi, imazhi) VALUES (?,?,?,?,?,?)',
+      'INSERT INTO Posts (titulli, permbajtja, user_id, category_id, statusi, imazhi, data_publikimit) VALUES (?,?,?,?,?,?,NOW())',
       [titulli, permbajtja, req.user.id, category_id, statusi || 'draft', imazhi]
     );
     res.status(201).json({ message: 'Created successfully!', id: r.insertId });
@@ -35,11 +35,16 @@ const createPost = async (req, res) => {
 const updatePost = async (req, res) => {
   const { titulli, permbajtja, category_id, statusi, imazhi } = req.body;
   try {
+    const [rows] = await db.query('SELECT * FROM Posts WHERE id=?', [req.params.id]);
+    if (rows.length === 0) return res.status(404).json({ message: 'Not found' });
+    if (rows[0].user_id !== req.user.id && req.user.role !== 'admin')
+      return res.status(403).json({ message: 'Not authorized' });
+
     await db.query(
       'UPDATE Posts SET titulli=?, permbajtja=?, category_id=?, statusi=?, imazhi=? WHERE id=?',
       [titulli, permbajtja, category_id, statusi, imazhi, req.params.id]
     );
-    res.json({ message: 'Changed successfully!' });
+    res.json({ message: 'Updated successfully!' });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
@@ -47,6 +52,11 @@ const updatePost = async (req, res) => {
 
 const deletePost = async (req, res) => {
   try {
+    const [rows] = await db.query('SELECT * FROM Posts WHERE id=?', [req.params.id]);
+    if (rows.length === 0) return res.status(404).json({ message: 'Not found' });
+    if (rows[0].user_id !== req.user.id && req.user.role !== 'admin')
+      return res.status(403).json({ message: 'Not authorized' });
+
     await db.query('DELETE FROM Posts WHERE id=?', [req.params.id]);
     res.json({ message: 'Deleted successfully!' });
   } catch (err) {
@@ -55,11 +65,11 @@ const deletePost = async (req, res) => {
 };
 
 const searchPosts = async (req, res) => {
+  const { q } = req.query;
   try {
-    const q = `%${req.query.q}%`;
     const [rows] = await db.query(
-      'SELECT * FROM Posts WHERE (titulli LIKE ? OR permbajtja LIKE ?) AND statusi = "published"',
-      [q, q]
+      'SELECT * FROM Posts WHERE statusi = "published" AND (titulli LIKE ? OR permbajtja LIKE ?)',
+      [`%${q}%`, `%${q}%`]
     );
     res.json(rows);
   } catch (err) {
@@ -70,7 +80,7 @@ const searchPosts = async (req, res) => {
 const getPostsByCategory = async (req, res) => {
   try {
     const [rows] = await db.query(
-      'SELECT p.*, c.emertimi as category_name FROM Posts p JOIN Categories c ON p.category_id = c.id WHERE p.statusi = "published" AND p.category_id = ?',
+      'SELECT Posts.*, Categories.emertimi as category_name FROM Posts JOIN Categories ON Posts.category_id = Categories.id WHERE Posts.statusi = "published" AND Posts.category_id = ?',
       [req.params.id]
     );
     res.json(rows);
