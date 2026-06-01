@@ -20,6 +20,8 @@ import Home from './pages/public/Home';
 import PostDetail from './pages/public/PostDetail';
 import CreatePost from './pages/public/CreatePost';
 import Profile from './pages/public/Profile';
+import PostsByCategory from './pages/public/PostsByCategory';
+import PostsByTag from './pages/public/PostsByTag';
 
 function Layout({ children }) {
   const location = useLocation();
@@ -56,7 +58,8 @@ function App() {
           <Route path="/blog/post/:id" element={<PublicRoute><PostDetail /></PublicRoute>} />
           <Route path="/blog/create" element={<PublicRoute><CreatePost /></PublicRoute>} />
           <Route path="/blog/profile" element={<PublicRoute><Profile /></PublicRoute>} />
-          
+          <Route path="/blog/category/:id" element={<PublicRoute><PostsByCategory /></PublicRoute>} />
+          <Route path="/blog/tag/:id" element={<PublicRoute><PostsByTag /></PublicRoute>} />
         </Routes>
       </Layout>
     </BrowserRouter>
