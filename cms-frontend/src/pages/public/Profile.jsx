@@ -75,13 +75,13 @@ const handlePhotoRemove = async () => {
   return (
     <div>
       <nav style={{ background: '#7c3a00', padding: '12px 24px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-        <h4 style={{ color: 'white', margin: 0, cursor: 'pointer' }} onClick={() => navigate('/blog')}>← CMS Blog</h4>
+        <h4 style={{ color: 'white', margin: 0, cursor: 'pointer' }} onClick={() => navigate('/blog')}>← 𝐒𝐭✰𝐫𝐁𝐥𝐨𝐠</h4>
       </nav>
 
       <div style={{ maxWidth: '800px', margin: '32px auto', padding: '0 16px' }}>
         
         {/* Informacionet */}
-        <h2 style={{ color: '#7c3a00' }}>Profili Im</h2>
+        <h2 style={{ color: '#7c3a00' }}>My Profile</h2>
         {msg && <p style={{ color: 'green' }}>{msg}</p>}
 
         {/* Foto Profili */}

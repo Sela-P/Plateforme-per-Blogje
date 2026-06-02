@@ -1,7 +1,12 @@
 import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom';
-import Sidebar from './components/Sidebar';
-import Login from './pages/Login';
 import { lazy, Suspense } from 'react';
+import Sidebar from './components/Sidebar';
+import PrivateRoute from './components/PrivateRoute';
+import PublicRoute from './components/PublicRoute';
+
+
+const Login = lazy(() => import('./pages/Login'));
+const Register = lazy(() => import('./pages/Register'));
 
 const Dashboard = lazy(() => import('./pages/Dashboard'));
 const Posts = lazy(() => import('./pages/Posts'));
@@ -11,21 +16,18 @@ const Comments = lazy(() => import('./pages/Comments'));
 const Pages = lazy(() => import('./pages/Pages'));
 const Media = lazy(() => import('./pages/Media'));
 const Settings = lazy(() => import('./pages/Settings'));
+const Newsletter = lazy(() => import('./pages/Newsletter'));
+const Users = lazy(() => import('./pages/Users'));
+const Roles = lazy(() => import('./pages/Roles'));
+const Subscriptions = lazy(() => import('./pages/Subscriptions'));
 
-import Newsletter from './pages/Newsletter';
-import Users from './pages/Users';
-import Roles from './pages/Roles';
-import Subscriptions from './pages/Subscriptions';
-import Register from './pages/Register';
-import PrivateRoute from './components/PrivateRoute';
-import PublicRoute from './components/PublicRoute';
-import Home from './pages/public/Home';
-import PostDetail from './pages/public/PostDetail';
-import CreatePost from './pages/public/CreatePost';
-import Profile from './pages/public/Profile';
-import PostsByCategory from './pages/public/PostsByCategory';
-import PostsByTag from './pages/public/PostsByTag';
-import EditPost from './pages/public/EditPost';
+const Home = lazy(() => import('./pages/public/Home'));
+const PostDetail = lazy(() => import('./pages/public/PostDetail'));
+const CreatePost = lazy(() => import('./pages/public/CreatePost'));
+const Profile = lazy(() => import('./pages/public/Profile'));
+const PostsByCategory = lazy(() => import('./pages/public/PostsByCategory'));
+const PostsByTag = lazy(() => import('./pages/public/PostsByTag'));
+const EditPost = lazy(() => import('./pages/public/EditPost'));
 
 function Layout({ children }) {
   const location = useLocation();
@@ -42,13 +44,30 @@ function App() {
   return (
     <BrowserRouter>
       <Layout>
-        <Suspense fallback={<div>Loading...</div>}></Suspense>
+         <Suspense fallback={<div>Loading...</div>}>
+
         <Routes>
+
+          <Route
+              path="/dashboard"
+              element={
+                <PrivateRoute adminOnly>
+                  <Dashboard />
+                </PrivateRoute>
+              }
+            />
+
+            <Route
+              path="/posts"
+              element={
+                <PrivateRoute adminOnly>
+                  <Posts />
+                </PrivateRoute>
+              }
+            />
           <Route path="/" element={<Login />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
-          <Route path="/dashboard" element={<PrivateRoute adminOnly><Dashboard /></PrivateRoute>} />
-          <Route path="/posts" element={<PrivateRoute adminOnly><Posts /></PrivateRoute>} />
           <Route path="/categories" element={<PrivateRoute adminOnly><Categories /></PrivateRoute>} />
           <Route path="/tags" element={<PrivateRoute adminOnly><Tags /></PrivateRoute>} />
           <Route path="/comments" element={<PrivateRoute adminOnly><Comments /></PrivateRoute>} />
@@ -68,6 +87,7 @@ function App() {
           <Route path="/blog/edit/:id" element={<PublicRoute><EditPost /></PublicRoute>} />
 
         </Routes>
+        </Suspense>
       </Layout>
     </BrowserRouter>
   );

@@ -99,7 +99,7 @@ function Home() {
   return (
     <div>
       <nav style={{ background: '#7c3a00', padding: '12px 24px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-        <h4 style={{ color: 'white', margin: 0 }}>CMS Blog</h4>
+        <h4 style={{ color: 'white', margin: 0 }}> 𝐒𝐭✰𝐫𝐁𝐥𝐨𝐠</h4>
         <div style={{ display: 'flex', gap: '16px', alignItems: 'center' }}>
           <button onClick={() => navigate('/blog/profile')} style={{ background: 'transparent', color: 'white', border: '1px solid white', padding: '6px 14px', borderRadius: '6px', cursor: 'pointer' }}>
             Profile
@@ -108,39 +108,36 @@ function Home() {
             
             + Create Post
           </button>
-          <form onSubmit={handleSearch} style={{ display: 'flex', gap: '8px' }}>
-            <input
-              type="text"
-              placeholder="Search posts..."
-              value={searchQuery}
-              onChange={(e) => {
-                setSearchQuery(e.target.value);
-                if (!e.target.value) {
-                  setFilteredPosts([]);
-                  setHasSearched(false);
-                }
-              }}
-              style={{
-                padding: '6px 12px',
-                borderRadius: '6px',
-                border: 'none',
-                fontSize: '14px'
-              }}
-            />
-
-            <button
-              type="submit"
-              style={{
-                background: 'white',
-                color: '#7c3a00',
-                border: 'none',
-                padding: '6px 12px',
-                borderRadius: '6px',
-                cursor: 'pointer'
-              }}
-            >
-              🔍
-            </button>
+          <form onSubmit={handleSearch} style={{ display: 'flex', alignItems: 'center' }}>
+            <div style={{
+              display: 'flex',
+              alignItems: 'center',
+              background: 'white',
+              border: '1.5px solid #ccc',
+              borderRadius: '50px',
+              padding: '6px 14px',
+              gap: '8px',
+              width: '280px'
+            }}>
+              <span style={{ fontSize: '16px', color: '#888' }}>🔎︎</span>
+              <input
+                type="text"
+                placeholder="Search posts..."
+                value={searchQuery}
+                onChange={(e) => {
+                  setSearchQuery(e.target.value);
+                  if (!e.target.value) setFilteredPosts([]);
+                }}
+                style={{
+                  border: 'none',
+                  outline: 'none',
+                  fontSize: '14px',
+                  width: '100%',
+                  background: 'transparent',
+                  color: '#7c3a00'
+                }}
+              />
+            </div>
           </form>
 
           <button

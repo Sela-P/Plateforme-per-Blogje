@@ -28,7 +28,7 @@ function Sidebar() {
   return (
     <div className="sidebar">
       <div className="sidebar-brand">
-        <h5>CMS Blog</h5>
+        <h5>𝐒𝐭✰𝐫𝐁𝐥𝐨𝐠</h5>
         <span>Admin Panel</span>
       </div>
       <nav className="sidebar-nav">
