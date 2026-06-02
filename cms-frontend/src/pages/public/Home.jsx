@@ -163,7 +163,7 @@ function Home() {
         ) : (
           displayPosts.map(post => (
             <div key={post.id} onClick={() => navigate(`/blog/post/${post.id}`)}
-              style={{ background: 'white', border: '1px solid #eee', borderRadius: '10px', padding: '20px', marginBottom: '16px', cursor: 'pointer' }}>
+              style={{ background: '#8c5d3460', border: '1px solid #eee', borderRadius: '10px', padding: '20px', marginBottom: '16px', cursor: 'pointer' }}>
               {post.imazhi && (
                 <img src={`http://localhost:5000${post.imazhi}`}
                   style={{ width: '100%', maxHeight: '200px', objectFit: 'cover', borderRadius: '8px', marginBottom: '10px' }}
@@ -197,7 +197,7 @@ function Home() {
       </div>
 
       {/* Newsletter */}
-      <div style={{ maxWidth: '800px', margin: '32px auto', padding: '24px', background: '#fff0e6', borderRadius: '10px', textAlign: 'center' }}>
+      <div style={{ maxWidth: '800px', margin: '32px auto', padding: '24px', background: '#ac5e2d79', borderRadius: '10px', textAlign: 'center' }}>
         <h3 style={{ color: '#7c3a00', marginBottom: '8px' }}>Subscribe to Newsletter</h3>
         <p style={{ color: '#b06030', fontSize: '14px', marginBottom: '16px' }}>Get notified when new posts are published!</p>
         {newsletterMsg && <p style={{ color: 'green', marginBottom: '8px' }}>{newsletterMsg}</p>}

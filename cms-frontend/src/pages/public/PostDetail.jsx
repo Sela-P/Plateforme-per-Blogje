@@ -119,9 +119,9 @@ function PostDetail() {
           <p style={{ color: '#888' }}>No comments yet.</p>
         ) : (
           comments.map(c => (
-            <div key={c.id} style={{ background: '#f9f9f9', borderRadius: '8px', padding: '12px', marginBottom: '10px' }}>
+            <div key={c.id} style={{ background: '#d19b6b49', borderRadius: '8px', padding: '12px', marginBottom: '10px' }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-            <p style={{ margin: '0 0 4px', fontSize: '13px', color: '#999' }}>User #{c.user_id}</p>
+            <p style={{ margin: '0 0 4px', fontSize: '13px', color: '#492717' }}>User #{c.user_id}</p>
             {(c.user_id === user.id || user.role === 'admin') && (
                 <button onClick={() => handleDeleteComment(c.id)}
                 style={{ background: 'transparent', color: '#dc3545', border: 'none', cursor: 'pointer', fontSize: '13px' }}>
