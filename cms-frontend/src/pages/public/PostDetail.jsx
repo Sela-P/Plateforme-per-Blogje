@@ -73,6 +73,7 @@ function PostDetail() {
       <div style={{ maxWidth: '800px', margin: '32px auto', padding: '0 16px' }}>
         <h1 style={{ color: '#7c3a00' }}>{post.titulli}</h1>
         <p style={{ color: '#999', fontSize: '13px' }}>{post.data_publikimit ? new Date(post.data_publikimit).toLocaleDateString('sq-AL') : 'No date'}</p>
+        <p style={{ color: '#999', fontSize: '13px' }}> {post.author}</p>
 
         {(post.user_id === user.id || user.role === 'admin') && (
           <div style={{ display: 'flex', gap: '10px', marginBottom: '16px' }}>
@@ -121,7 +122,7 @@ function PostDetail() {
           comments.map(c => (
             <div key={c.id} style={{ background: '#d19b6b49', borderRadius: '8px', padding: '12px', marginBottom: '10px' }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-            <p style={{ margin: '0 0 4px', fontSize: '13px', color: '#492717' }}>User #{c.user_id}</p>
+            <p style={{ margin: '0 0 4px', fontSize: '13px', color: '#492717' }}>👤 {c.author || 'Unknown'}</p>
             {(c.user_id === user.id || user.role === 'admin') && (
                 <button onClick={() => handleDeleteComment(c.id)}
                 style={{ background: 'transparent', color: '#dc3545', border: 'none', cursor: 'pointer', fontSize: '13px' }}>

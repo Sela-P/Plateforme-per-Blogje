@@ -2,7 +2,9 @@ const db = require('../config/db');
 
 const getComments = async (req, res) => {
   try {
-    const [rows] = await db.query('SELECT * FROM Comments');
+    const [rows] = await db.query(
+      'SELECT Comments.*, Users.emri as author FROM Comments LEFT JOIN Users ON Comments.user_id = Users.id'
+    );
     res.json(rows);
   } catch (err) {
     res.status(500).json({ error: err.message });

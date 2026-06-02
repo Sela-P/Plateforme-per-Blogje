@@ -38,7 +38,7 @@ function Login() {
       <div className="login-card">
         <div style={{ textAlign: 'center', marginBottom: '2rem' }}>
           <div style={{ width: '52px', height: '52px', background: '#fff0e6', borderRadius: '14px', margin: '0 auto 12px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-            <span style={{ fontSize: '40px', color: '#c05621' }}>✯</span>
+            <span style={{ fontSize: '40px', color: '#c05621' }}>✩</span>
           </div>
           <h4 style={{ fontSize: '20px', fontWeight: '600', color: '#7c3a00' }}>𝐒𝐭✰𝐫𝐁𝐥𝐨𝐠</h4>
           <p style={{ fontSize: '13px', color: '#b06030', marginTop: '4px' }}>Sign in to your account</p>

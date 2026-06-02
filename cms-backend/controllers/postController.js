@@ -2,7 +2,9 @@ const db = require('../config/db');
 
 const getPosts = async (req, res) => {
   try {
-    const [rows] = await db.query('SELECT * FROM Posts');
+    const [rows] = await db.query(
+      'SELECT Posts.*, Users.emri as author FROM Posts LEFT JOIN Users ON Posts.user_id = Users.id'
+    );
     res.json(rows);
   } catch (err) {
     res.status(500).json({ error: err.message });
@@ -11,7 +13,10 @@ const getPosts = async (req, res) => {
 
 const getPost = async (req, res) => {
   try {
-    const [rows] = await db.query('SELECT * FROM Posts WHERE id = ?', [req.params.id]);
+    const [rows] = await db.query(
+      'SELECT Posts.*, Users.emri as author FROM Posts LEFT JOIN Users ON Posts.user_id = Users.id WHERE Posts.id = ?',
+      [req.params.id]
+    );
     if (rows.length === 0) return res.status(404).json({ message: 'Not found!' });
     res.json(rows[0]);
   } catch (err) {

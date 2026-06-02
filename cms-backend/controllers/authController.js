@@ -72,7 +72,7 @@ const login = async (req, res) => {
       [user.id, refreshTokenValue, expiresAt]
     );
 
-    res.json({ token, refreshToken: refreshTokenValue, user: { id: user.id, emri: user.emri, email: user.email, role } });
+    res.json({ token, refreshToken: refreshTokenValue, user: { id: user.id, emri: user.emri, email: user.email, role, foto_profili: user.foto_profili || '' } });
   } catch (err) {
     res.status(500).json({ message: 'Server Error', error: err.message });
   }

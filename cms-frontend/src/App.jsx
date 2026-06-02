@@ -28,6 +28,7 @@ const Profile = lazy(() => import('./pages/public/Profile'));
 const PostsByCategory = lazy(() => import('./pages/public/PostsByCategory'));
 const PostsByTag = lazy(() => import('./pages/public/PostsByTag'));
 const EditPost = lazy(() => import('./pages/public/EditPost'));
+const PublicSubscriptions = lazy(() => import('./pages/public/Subscriptions'));
 
 function Layout({ children }) {
   const location = useLocation();
@@ -85,6 +86,7 @@ function App() {
           <Route path="/blog/category/:id" element={<PublicRoute><PostsByCategory /></PublicRoute>} />
           <Route path="/blog/tag/:id" element={<PublicRoute><PostsByTag /></PublicRoute>} />
           <Route path="/blog/edit/:id" element={<PublicRoute><EditPost /></PublicRoute>} />
+          <Route path="/blog/subscriptions" element={<PublicRoute><PublicSubscriptions /></PublicRoute>} />
 
         </Routes>
         </Suspense>

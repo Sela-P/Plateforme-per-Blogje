@@ -85,7 +85,7 @@ const handlePhotoRemove = async () => {
         {msg && <p style={{ color: 'green' }}>{msg}</p>}
 
         {/* Foto Profili */}
-        <div style={{ background: 'white', border: '1px solid #eee', borderRadius: '10px', padding: '20px', marginBottom: '24px', textAlign: 'center' }}>
+        <div style={{ background: '#8c5d3460', border: '1px solid #eeeeee', borderRadius: '10px', padding: '20px', marginBottom: '24px', textAlign: 'center' }}>
         <div style={{ width: '100px', height: '100px', borderRadius: '50%', background: '#f0e6d3', margin: '0 auto 16px', overflow: 'hidden', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
             {fotoProfile ? (
             <img src={`http://localhost:5000${fotoProfile}`} style={{ width: '100%', height: '100%', objectFit: 'cover' }} alt="Profile" />
@@ -106,7 +106,7 @@ const handlePhotoRemove = async () => {
         </div>
 </div>
 
-        <form onSubmit={handleUpdate} style={{ background: 'white', border: '1px solid #eee', borderRadius: '10px', padding: '20px', marginBottom: '32px' }}>
+        <form onSubmit={handleUpdate} style={{ background: '#8c5d3460', border: '1px solid #eee', borderRadius: '10px', padding: '20px', marginBottom: '32px' }}>
           <div style={{ marginBottom: '16px' }}>
             <label style={{ display: 'block', marginBottom: '6px', fontWeight: '500' }}>Name</label>
             <input type="text" value={emri} onChange={e => setEmri(e.target.value)}
@@ -134,7 +134,7 @@ const handlePhotoRemove = async () => {
         ) : (
           posts.map(post => (
             <div key={post.id} onClick={() => navigate(`/blog/post/${post.id}`)}
-              style={{ background: 'white', border: '1px solid #eee', borderRadius: '10px', padding: '20px', marginBottom: '16px', cursor: 'pointer' }}>
+              style={{ background: '#8c5d3460', border: '1px solid #eee', borderRadius: '10px', padding: '20px', marginBottom: '16px', cursor: 'pointer' }}>
               <h3 style={{ color: '#7c3a00', margin: '0 0 8px' }}>{post.titulli}</h3>
               <p style={{ color: '#666', fontSize: '14px' }}>{post.permbajtja?.substring(0, 100)}...</p>
             </div>

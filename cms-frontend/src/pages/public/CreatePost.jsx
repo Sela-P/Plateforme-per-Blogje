@@ -43,11 +43,11 @@ navigate('/blog');
   return (
     <div>
       <nav style={{ background: '#7c3a00', padding: '12px 24px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-        <h4 style={{ color: 'white', margin: 0, cursor: 'pointer' }} onClick={() => navigate('/blog')}>← 𝐒𝐭✰𝐫𝐁𝐥𝐨𝐠</h4>
+        <h4 style={{ color: 'white', margin: 0, cursor: 'pointer' }} onClick={() => navigate('/blog')}>← CMS Blog</h4>
       </nav>
 
       <div style={{ maxWidth: '800px', margin: '32px auto', padding: '0 16px' }}>
-        <h2 style={{ color: '#7c3a00', marginBottom: '24px' }}>Create a New Post</h2>
+        <h2 style={{ color: '#7c3a00', marginBottom: '24px' }}>Create a New Post </h2>
         {error && <div style={{ color: 'red', marginBottom: '16px' }}>{error}</div>}
         <form onSubmit={handleSubmit}>
           <div style={{ marginBottom: '16px' }}>

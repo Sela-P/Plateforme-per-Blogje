@@ -56,6 +56,20 @@ const getUserSubscriptions = async (req, res) => {
   }
 };
 
+const getAllSubscriptions = async (req, res) => {
+  try {
+    const [rows] = await db.query(
+      `SELECT us.*, sp.emertimi as plani, u.emri as user_emri 
+       FROM UserSubscriptions us 
+       LEFT JOIN SubscriptionPlans sp ON us.plan_id = sp.id
+       LEFT JOIN Users u ON us.user_id = u.id`
+    );
+    res.json(rows);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
+
 const createSubscription = async (req, res) => {
   const { user_id, plan_id, data_fillimit, data_mbarimit } = req.body;
   try {
@@ -69,4 +83,4 @@ const createSubscription = async (req, res) => {
   }
 };
 
-module.exports = { getPlans, createPlan, updatePlan, deletePlan, getUserSubscriptions, createSubscription };
+module.exports = { getPlans, createPlan, updatePlan, deletePlan, getUserSubscriptions, createSubscription, getAllSubscriptions  };

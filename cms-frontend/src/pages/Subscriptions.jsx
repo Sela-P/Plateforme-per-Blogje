@@ -5,7 +5,9 @@ import API from '../services/api';
 function Subscriptions() {
   const [plans, setPlans] = useState([]);
   const [subscriptions, setSubscriptions] = useState([]);
+  const [users, setUsers] = useState([]);
   const [form, setForm] = useState({ emertimi: '', cmimi: '', kohezgjatja_dite: '', pershkrimi: '' });
+  const [subForm, setSubForm] = useState({ user_id: '', plan_id: '' });
   const [editing, setEditing] = useState(null);
   const navigate = useNavigate();
 
@@ -13,6 +15,7 @@ function Subscriptions() {
     if (!localStorage.getItem('token')) navigate('/login');
     fetchPlans();
     fetchSubscriptions();
+    fetchUsers();
   }, []);
 
   const fetchPlans = async () => {
@@ -21,8 +24,13 @@ function Subscriptions() {
   };
 
   const fetchSubscriptions = async () => {
-    const res = await API.get('/subscriptions/my');
+    const res = await API.get('/subscriptions/all');
     setSubscriptions(res.data);
+  };
+
+  const fetchUsers = async () => {
+    const res = await API.get('/users');
+    setUsers(res.data);
   };
 
   const handleSubmit = async (e) => {
@@ -35,6 +43,27 @@ function Subscriptions() {
     }
     setForm({ emertimi: '', cmimi: '', kohezgjatja_dite: '', pershkrimi: '' });
     fetchPlans();
+  };
+
+  const handleAssignSubscription = async (e) => {
+    e.preventDefault();
+    try {
+      const plan = plans.find(p => p.id === parseInt(subForm.plan_id));
+      const dataFillimit = new Date().toISOString().slice(0, 19).replace('T', ' ');
+      const dataMbarimit = new Date(Date.now() + plan.kohezgjatja_dite * 24 * 60 * 60 * 1000)
+        .toISOString().slice(0, 19).replace('T', ' ');
+
+      await API.post('/subscriptions', {
+        user_id: parseInt(subForm.user_id),
+        plan_id: parseInt(subForm.plan_id),
+        data_fillimit: dataFillimit,
+        data_mbarimit: dataMbarimit
+      });
+      setSubForm({ user_id: '', plan_id: '' });
+      fetchSubscriptions();
+    } catch (err) {
+      console.error(err);
+    }
   };
 
   const handleEdit = (p) => {
@@ -56,6 +85,8 @@ function Subscriptions() {
         <div className="avatar-circle">A</div>
       </div>
       <div className="page-content">
+
+        {/* Forma e planit */}
         <div className="content-card">
           <div className="card-title">{editing ? 'Edit Plan' : 'Add New Plan'}</div>
           <form onSubmit={handleSubmit}>
@@ -78,6 +109,31 @@ function Subscriptions() {
           </form>
         </div>
 
+        {/* Forma e caktimit te subscription */}
+        <div className="content-card">
+          <div className="card-title">Assign Subscription to User</div>
+          <form onSubmit={handleAssignSubscription}>
+            <label className="form-label-custom">User</label>
+            <select className="form-control-custom" value={subForm.user_id}
+              onChange={e => setSubForm({ ...subForm, user_id: e.target.value })} required>
+              <option value="">Select user...</option>
+              {users.map(u => (
+                <option key={u.id} value={u.id}>{u.emri} ({u.email})</option>
+              ))}
+            </select>
+            <label className="form-label-custom">Plan</label>
+            <select className="form-control-custom" value={subForm.plan_id}
+              onChange={e => setSubForm({ ...subForm, plan_id: e.target.value })} required>
+              <option value="">Select plan...</option>
+              {plans.filter(p => p.statusi === 'active').map(p => (
+                <option key={p.id} value={p.id}>{p.emertimi} — {p.cmimi}€</option>
+              ))}
+            </select>
+            <button type="submit" className="btn-primary-custom">Assign Subscription</button>
+          </form>
+        </div>
+
+        {/* Tabela e planeve */}
         <div className="content-card">
           <div className="card-title">All Plans ({plans.length})</div>
           <table className="table-clean">
@@ -107,11 +163,13 @@ function Subscriptions() {
           </table>
         </div>
 
+        {/* Tabela e subscriptions */}
         <div className="content-card">
-          <div className="card-title">Active Subscriptions ({subscriptions.length})</div>
+          <div className="card-title">All Subscriptions ({subscriptions.length})</div>
           <table className="table-clean">
             <thead>
               <tr>
+                <th>User</th>
                 <th>Plan</th>
                 <th>Start Date</th>
                 <th>End Date</th>
@@ -121,6 +179,7 @@ function Subscriptions() {
             <tbody>
               {subscriptions.map(s => (
                 <tr key={s.id}>
+                  <td>{s.user_emri}</td>
                   <td>{s.plani}</td>
                   <td style={{ color: '#b06030' }}>{new Date(s.data_fillimit).toLocaleDateString()}</td>
                   <td style={{ color: '#b06030' }}>{new Date(s.data_mbarimit).toLocaleDateString()}</td>
@@ -130,6 +189,7 @@ function Subscriptions() {
             </tbody>
           </table>
         </div>
+
       </div>
     </div>
   );

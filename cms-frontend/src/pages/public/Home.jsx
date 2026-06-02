@@ -104,6 +104,10 @@ function Home() {
           <button onClick={() => navigate('/blog/profile')} style={{ background: 'transparent', color: 'white', border: '1px solid white', padding: '6px 14px', borderRadius: '6px', cursor: 'pointer' }}>
             Profile
           </button>
+         <button onClick={() => navigate('/blog/subscriptions')} 
+          style={{ background: 'transparent', color: 'white', border: '1px solid white', padding: '6px 14px', borderRadius: '6px', cursor: 'pointer' }}>
+          Plans
+        </button>
           <button onClick={() => navigate('/blog/create')} style={{ background: 'white', color: '#7c3a00', border: 'none', padding: '6px 14px', borderRadius: '6px', cursor: 'pointer' }}>
             
             + Create Post
@@ -190,6 +194,7 @@ function Home() {
                 </span>
               )}
               <h3 style={{ color: '#7c3a00', margin: '0 0 8px' }}>{post.titulli}</h3>
+              <p style={{ color: '#4b1800', fontSize: '12px', marginBottom: '4px' }}> {post.author}</p>
               <p style={{ color: '#666', fontSize: '14px' }}>{post.permbajtja?.substring(0, 150)}...</p>
             </div>
           ))
